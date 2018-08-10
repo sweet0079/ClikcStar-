@@ -12,6 +12,7 @@ export default {
     Bomb:'bomb',
     startClock:'startClock',
     Resurrection: 'resurrection',
+    SetSXFlag: 'setSanXiaoFlag',
 
     //音效
     micStartBtn: 'msgStartBtn',

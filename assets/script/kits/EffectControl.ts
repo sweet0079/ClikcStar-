@@ -7,6 +7,7 @@ export default class EffectControl extends cc.Component {
     //----- 编辑器属性 -----//
     @property(cc.Animation) Health: cc.Animation = null;
     @property(cc.ProgressBar) DoubleLabel: cc.ProgressBar = null;
+    @property(cc.ProgressBar) FrozenPB: cc.ProgressBar = null;
     //----- 属性声明 -----//
     //----- 生命周期 -----//
     //----- 按钮回调 -----//
@@ -27,6 +28,17 @@ export default class EffectControl extends cc.Component {
             if(this.DoubleLabel.progress <= 0.01)
             {
                 this.DoubleLabel.node.active = false;
+            }
+        },0.05,100);
+    }
+    ShowFrozenAni(){
+        this.FrozenPB.node.parent.active = true;
+        this.FrozenPB.progress = 1;
+        this.schedule(()=>{
+            this.FrozenPB.progress -= 0.01;
+            if(this.FrozenPB.progress <= 0.01)
+            {
+                this.FrozenPB.node.parent.active = false;
             }
         },0.05,100);
     }

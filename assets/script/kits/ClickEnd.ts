@@ -79,6 +79,7 @@ export default class ClickEnd extends cc.Component {
         // }
         // else
         // {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.SetSXFlag);
             lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
             let clickAni = cc.instantiate(this.clickPre);
             clickAni.getComponent(cc.Animation).once('finished',()=>{

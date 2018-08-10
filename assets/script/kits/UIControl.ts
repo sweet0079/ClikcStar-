@@ -246,6 +246,10 @@ export default class UIcontrol extends cc.Component {
         this.EffectNode.ShowHealthAni();
         this.HPBar.blink();
     }
+    //减速特效
+    frozen(){
+        this.EffectNode.ShowFrozenAni();
+    }
 
     getHPIsFull(){
         if(this.nowHP >= lib.defConfig.MAXHP)
@@ -369,10 +373,8 @@ export default class UIcontrol extends cc.Component {
     }
 
     addPOWER(num:number){
-        console.log("addPOWER");
         if(this.ShanKuang.getChildByName("tips").active)
         {
-            console.log("return");
             return;
         }
         this.nowPOWER += num;
@@ -389,7 +391,6 @@ export default class UIcontrol extends cc.Component {
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
-            console.log("this.nowPOWER == lib.defConfig.MAXPOWER");
             this.PowerFullAni();
             this.powerFull.CreateSpecial();
         }

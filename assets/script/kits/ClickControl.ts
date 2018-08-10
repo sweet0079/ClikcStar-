@@ -25,20 +25,30 @@ export default class ClickControl extends cc.Component {
     //----- 属性声明 -----//
     private ScoreArr :Array<_kits.ClickShape.ScoreInfo> = [];
     //连击数
-    private ComboNum: number = 0;
-    //上一个点击的增加了多少combo
-    private LastAddCombo: number = 0;
+    private ComboNum: number = 1;
     //上一个点击的形状
     private LastShape: Array<number> = [];
+    //三消连击数
+    private SXComboNum: number = 1;
+    //三消上一个点击的形状
+    private SXLastShape: Array<number> = [];
+    //上一个点击的增加了多少三消
+    private SXLastAddCombo: number = 0;
+    //上一个点击的增加了多少combo
+    private LastAddCombo: number = 0;
     //下一个要展示的分数
     private ShowScore: number = 0;
     //下一个要展示的分数位置
     private ShowScorePos: cc.Vec2 = cc.v2(0,0);
+    //清屏回调标识
+    private SanxiaoFlag: boolean = false;
+
     //----- 生命周期 -----//
 
     // onLoad () {}
 
     start () {
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.SetSXFlag,"setSXFlag",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickStart,"add",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Settlement,"settlement",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
@@ -58,7 +68,26 @@ export default class ClickControl extends cc.Component {
         this.createScore();
     }
     //----- 私有方法 -----//
-    //根据combo，计算获得的能量
+    /**
+     * 清除指定形状
+     * @method
+     * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
+     * @private
+     */
+    private CleanSameShape(){
+        this.SanxiaoFlag = true;
+        this.SXLastAddCombo = 0;
+        this.SXComboNum = 1;
+        ShapeManager.getinstance().desAppointShape(this.SXLastShape);
+        this.SXLastShape = [];
+    }
+    
+    /**
+     * 根据combo，计算获得的能量
+     * @method
+     * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
+     * @private
+     */
     private CalAddPower(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
         let basepower = ScoreInfoArr.length * 10;
         if(this.birthLayout.getweaveFlag())
@@ -82,7 +111,126 @@ export default class ClickControl extends cc.Component {
         return basepower + ExPower;
     }
 
-    //根据点击计算combo，如果连续多重点击取最高combo数形状
+    /**
+     * 根据点击计算三消
+     * @method
+     * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
+     * @private
+     */
+    private CheckSanxiao(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
+        if(this.SanxiaoFlag)
+        {
+            return;
+        }
+        //将对象数组整理为形状数组
+        let ShapeArr = [];
+        for(let i = 0 ; i < ScoreInfoArr.length ; i++)
+        {
+            if(!ScoreInfoArr[i].isSpecial)
+            {
+                ShapeArr.push(ScoreInfoArr[i].shape);
+            }
+        }
+        //形状数组长度为0则返回
+        if(ShapeArr.length == 0)
+        {
+            return; 
+        }
+        console.log("CheckSanxiao");
+        console.log(this.SXLastShape);
+        console.log(ShapeArr);
+        console.log("before this.SXComboNum = " + this.SXComboNum);
+        //如果没有上次点击数组，将单次点击的形状数组排序后找出数量最多的形状
+        if(this.SXLastShape.length == 0)
+        {
+            if(ShapeArr.length == 1)
+            {
+                this.SXLastShape = ShapeArr;
+                this.SXLastAddCombo = 0;
+            }
+            else
+            {
+                //排序
+                ShapeArr.sort(function sortNumber(a,b)
+                {
+                return a - b
+                });
+                let maxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+                let maxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
+                if(maxCombo == 1)
+                {
+                    maxIndex.push(ShapeArr[ShapeArr.length - 1]);
+                }
+                this.SXLastShape = maxIndex;
+                this.SXComboNum = maxCombo;
+                this.SXLastAddCombo = maxCombo;
+            }
+        }
+        else
+        {
+            let maxCombo = 0;
+            let maxIndex = [];
+            for(let i = 0; i < this.SXLastShape.length; i++)
+            {
+                let temp = 0;
+                for(let j = 0; j < ShapeArr.length; j++)
+                {
+                    if(this.SXLastShape[i] == ShapeArr[j])
+                    {
+                        temp++;
+                    }
+                }
+                if(temp > maxCombo)
+                {
+                    maxCombo = temp;
+                    maxIndex = [this.SXLastShape[i]];
+                }
+                else if(temp == maxCombo && temp != 0)
+                {
+                    maxIndex.push(this.SXLastShape[i]);
+                }
+            }
+            //如果没形成combo，重置combo数，根据这次点击重置LastShape数组
+            if(maxCombo == 0)
+            {
+                this.SXComboNum = 1;
+                this.SXLastShape = [];
+                this.CheckSanxiao(ScoreInfoArr);
+            }
+            //形成combo，累加combo数并更新LastShape数组
+            else
+            {
+                this.SXLastShape = maxIndex;
+                this.SXComboNum += maxCombo;
+                this.SXLastAddCombo = maxCombo;
+                let ScoremaxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+                let ScoremaxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
+                if(ScoremaxCombo > this.SXComboNum)
+                {
+                    this.SXComboNum = ScoremaxCombo;
+                    this.SXLastShape = ScoremaxIndex;
+                    this.SXLastAddCombo = ScoremaxCombo;
+                }
+                else if(ScoremaxCombo == this.SXComboNum)
+                {
+                    for(let i = 0; i < ScoremaxIndex.length ; i++)
+                    {
+                        this.SXLastShape.push(ScoremaxIndex[i]);
+                    }
+                }
+            }
+        }
+        console.log("CheckSanxiao after");
+        console.log(this.SXLastShape);
+        console.log("after this.SXComboNum = " + this.SXComboNum);
+    }
+
+    /**
+     * 根据点击计算combo，如果连续多重点击取最高combo数形状
+     * @method
+     * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
+     * @private
+     */
     private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
         if(this.birthLayout.getweaveFlag())
         {
@@ -198,11 +346,11 @@ export default class ClickControl extends cc.Component {
         if(this.ComboNum < 3)
         {
             return;
-        }
+        }   
         let node = cc.instantiate(this.comboPfb);
         node.getChildByName("number").getComponent(cc.Label).string = this.ComboNum.toString();
         let ani = node.getComponent(cc.Animation);
-        ani.on('finished',()=>{
+        ani.once('finished',()=>{
             node.destroy();
         },this);
         node.parent = this.Ziparent;
@@ -273,9 +421,16 @@ export default class ClickControl extends cc.Component {
     //重新开始
     private reStart(){
         this.ComboNum = 1;
+        this.SXComboNum = 1;
         this.ScoreArr = [];
         this.LastShape = [];
+        this.SXLastShape = [];
         this.LastAddCombo = 0;
+        this.SXLastAddCombo = 0;
+    }
+
+    private setSXFlag(){
+        this.SanxiaoFlag = false;
     }
 
     private add(ScoreInfo:_kits.ClickShape.ScoreInfo){
@@ -311,7 +466,10 @@ export default class ClickControl extends cc.Component {
     private settlement(){
         if(this.ScoreArr.length == 0)
         {
-            this.ComboNum = 0;
+            this.ComboNum = 1;
+            this.LastShape = [];
+            this.SXComboNum = 1;
+            this.SXLastShape = [];
             //console.log("扣血");
             this.UIcon.minHP();
             this.ShowScore = 0;
@@ -321,7 +479,7 @@ export default class ClickControl extends cc.Component {
         {
             // this.ComboNum++;
             this.CheckCombo(this.ScoreArr);
-            //console.log("length == 1" + " score =" + this.ScoreArr[0]);
+            this.CheckSanxiao(this.ScoreArr);
             let score = this.ScoreArr[0].score;
             if(ShapeManager.getinstance().getDoubleScore())
             {
@@ -334,6 +492,7 @@ export default class ClickControl extends cc.Component {
         {
             // this.ComboNum += this.ScoreArr.length;
             this.CheckCombo(this.ScoreArr);
+            this.CheckSanxiao(this.ScoreArr);
             let score = 0;
             for(let i = 0; i < this.ScoreArr.length; i++)
             {
@@ -354,6 +513,10 @@ export default class ClickControl extends cc.Component {
         this.ScoreArr = [];
         this.ShowCombo();
         this.showGood();
+        if(this.SXComboNum >= 3)
+        {
+            this.CleanSameShape();
+        }
     }
 
     //找出数组中数量最多的元素(已排序过的数组)

@@ -104,6 +104,23 @@ export default class ShapeManager {
 
     }
 
+    //爆炸所有指定形状
+    desAppointShape(arr:Array<number>){
+        for(let j = 0; j < arr.length ; j++)
+        {
+            for(let i = 0; i < this.shapeArr.length; i++)
+            {
+                let shapeCon = this.shapeArr[i].getComponent(ShapeControl);
+                if(shapeCon.gettype()[0] == arr[j])
+                {
+                    this.shapeArr[i].getComponent(ShapeControl).bombCallBack();
+                    this.delShape(this.shapeArr[i]);
+                    i--;
+                }
+            }
+        }
+    }
+
     //爆炸所有普通形状
     desNormalShape(){
         for(let i = 0; i < this.shapeArr.length; i++)
