@@ -39,7 +39,7 @@ export default class PowerFullControl extends cc.Component {
             }
         }
         //75%几率正面效果
-        else
+        else if(temp < 100)
         {
             let temp = parseInt((cc.random0To1() * (lib.defConfig.positiveBuff.length)).toString());
             switch(temp)
@@ -62,6 +62,11 @@ export default class PowerFullControl extends cc.Component {
                 default:
                     break;
             }
+        }
+        //75%几率套路效果
+        else
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.StartWeave);
         }
         // this.assimilation();
     }

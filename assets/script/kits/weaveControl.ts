@@ -5,6 +5,7 @@ import * as lib from '../lib/lib'
 import birthControl from './BirthControl'
 import shapeControl from './ShapeControl'
 import { _kits } from '../../../libdts/kits';
+import ShapeManager from './ShapeManager';
 
 @ccclass
 export default class weaveControl extends cc.Component {
@@ -36,7 +37,7 @@ export default class weaveControl extends cc.Component {
     // update (dt) {} 
     //----- 公有方法 -----//
     //创建新手引导的形状
-    createNormalShape(){
+    createNoviceGuidance(){
         //获取随机参数数值
         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
         dpare.type = lib.defConfig.dissipate.none;
@@ -47,7 +48,6 @@ export default class weaveControl extends cc.Component {
         fpare1.Speed = 200;
         fpare1.Angle = 0;
         this._birthControl.birthPoints[18].createAppointShape(fpare1,dpare,cpare,spare);
-
         this._birthControl.birthPoints[16].createSpecialShape(1,fpare1,dpare,cpare);
     }
     //创建闪烁的特殊形状
@@ -77,60 +77,7 @@ export default class weaveControl extends cc.Component {
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
-            switch(this._weavetype)
-            {
-                case lib.defConfig.Tricks.volley:
-                    this.volley();
-                    break
-                case lib.defConfig.Tricks.order:
-                    let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-                    this.order(startPoint);
-                    break;
-                case lib.defConfig.Tricks.union:
-                    this.union();
-                    break;
-                case lib.defConfig.Tricks.symmetry:
-                    this.symmetry();
-                    break;
-                case lib.defConfig.Tricks.Waterfall15:
-                    this.Waterfall15();
-                    break;
-                case lib.defConfig.Tricks.Waterfall25:
-                    this.Waterfall25();
-                    break;
-                case lib.defConfig.Tricks.focus:
-                    this.focus();
-                    break;
-                case lib.defConfig.Tricks.focusDiv:
-                    this.focusDiv();
-                    break;
-                case lib.defConfig.Tricks.across:
-                    this.across();
-                    break;
-                case lib.defConfig.Tricks.blink:
-                    this.blink(this._tempNum);
-                    break;
-                case lib.defConfig.Tricks.transform:
-                    this.transform();
-                    break;
-                case lib.defConfig.Tricks.AbsoluteReb:
-                    this.AbsoluteReb();
-                    break;
-                case lib.defConfig.Tricks.ladder:
-                    this.ladder();
-                    break;
-                case lib.defConfig.Tricks.overlapping:
-                    this.overlapping();
-                    break;
-                case lib.defConfig.Tricks.Stype:
-                    this.Stype();
-                    break;
-                case lib.defConfig.Tricks.Fantastic4:
-                    this.Fantastic4();
-                    break;
-            default:
-                    break;
-            }            
+            this.CreateWeave(this._weavetype);
             // // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
             // this.ladder();
         }
@@ -141,6 +88,62 @@ export default class weaveControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    private CreateWeave(type:number){
+        switch(type)
+        {
+            case lib.defConfig.Tricks.volley:
+                this.volley();
+                break
+            case lib.defConfig.Tricks.order:
+                let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+                this.order(startPoint);
+                break;
+            case lib.defConfig.Tricks.union:
+                this.union();
+                break;
+            case lib.defConfig.Tricks.symmetry:
+                this.symmetry();
+                break;
+            case lib.defConfig.Tricks.Waterfall15:
+                this.Waterfall15();
+                break;
+            case lib.defConfig.Tricks.Waterfall25:
+                this.Waterfall25();
+                break;
+            case lib.defConfig.Tricks.focus:
+                this.focus();
+                break;
+            case lib.defConfig.Tricks.focusDiv:
+                this.focusDiv();
+                break;
+            case lib.defConfig.Tricks.across:
+                this.across();
+                break;
+            case lib.defConfig.Tricks.blink:
+                this.blink(this._tempNum);
+                break;
+            case lib.defConfig.Tricks.transform:
+                this.transform();
+                break;
+            case lib.defConfig.Tricks.AbsoluteReb:
+                this.AbsoluteReb();
+                break;
+            case lib.defConfig.Tricks.ladder:
+                this.ladder();
+                break;
+            case lib.defConfig.Tricks.overlapping:
+                this.overlapping();
+                break;
+            case lib.defConfig.Tricks.Stype:
+                this.Stype();
+                break;
+            case lib.defConfig.Tricks.Fantastic4:
+                this.Fantastic4();
+                break;
+        default:
+                break;
+        }
+    }
     //Fantastic4主方法
     private Fantastic4(){
         //根据套路持续时间设置
@@ -624,6 +627,7 @@ export default class weaveControl extends cc.Component {
                 shape.setPosition(this.BlinkXArr[i],this.BlinkYArr[j]);
                 shape.getComponent(shapeControl).setShape(spare.type);
                 shape.parent = this._birthControl.birthPoints[0].getShapeParentNode();
+                ShapeManager.getinstance().addShape(shape);
             }
         }
     }

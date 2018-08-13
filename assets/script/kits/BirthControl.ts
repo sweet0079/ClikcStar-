@@ -4,6 +4,7 @@ import birthPointControl from './BirthPoint'
 import ShapeManager from './ShapeManager'
 import weaveControl from './weaveControl'
 import UIControl from './UIControl'
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,8 +13,6 @@ export default class BirthControl extends cc.Component {
     //----- 编辑器属性 -----//
     /** 套路多少秒来一波 */
     @property({tooltip:"套路多少秒来一波", type: cc.Integer}) WeaveComeTime: number = 20;
-    /** 套路多少秒随机刷特殊 */
-    @property({tooltip:"特殊多少秒来一波", type: cc.Integer}) SpecialComeTime: number = 1;
     /** 出生间隔数组 */
     @property({tooltip:"出生间隔数组", type: [cc.Float]}) BirthInterval: Array<number> = [];
     /** 出生个数数组 */
@@ -38,9 +37,12 @@ export default class BirthControl extends cc.Component {
     private weaveFlag:boolean = false;
     //套路控制组件
     private _weaveControl:weaveControl = null;
-    //特殊图形出现时间数组
-    private _SpeArr = [lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),
-        lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime)];
+    //特殊图形炸弹出现时间
+    private _SpeB = 1000;
+    //双倍炸弹概率
+    private _SpeBDouPercent = 0;
+    //特殊图形血包出现时间数组
+    private _SpeHArr = [];
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -146,7 +148,7 @@ export default class BirthControl extends cc.Component {
 
     //----- 私有方法 -----//
     private NoviceGuidance(){
-        this._weaveControl.createNormalShape();
+        this._weaveControl.createNoviceGuidance();
         this.UIcon.showNoviceGuidance();
         this.scheduleOnce(()=>{
             ShapeManager.getinstance().pauseAllShape();
@@ -157,14 +159,15 @@ export default class BirthControl extends cc.Component {
     private clockFun(){
         if(!this.weaveFlag)
         {
+            this.checkCreate();
             this.time += 0.5;
             this.interval += 0.5;
-            this.checkCreate();
             if(this.time % 1 == 0
             && this.time >= 3)
             {
                 this.minTime();
             }
+            // console.log(this.time);
         }
         else
         {
@@ -177,54 +180,78 @@ export default class BirthControl extends cc.Component {
         this.schedule(this.clockFun,0.5);
     }
 
+    private createSpeArr(){
+        if(this.time > lib.defConfig.SpecialBirthTime[lib.defConfig.SpecialBirthTime.length - 2])
+        {
+            if(this.time % 5 == 0)
+            {
+                this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(5);
+                this._SpeBDouPercent = 50;
+                // console.log(this._SpeB);
+            }
+        }
+        else
+        {
+            for(let i = 0; i < lib.defConfig.SpecialBirthTime.length - 1; i++)
+            {
+                if(this.time == lib.defConfig.SpecialBirthTime[i])
+                {
+                    this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.SpecialBirthTime[i + 1] - lib.defConfig.SpecialBirthTime[i]);
+                    this._SpeBDouPercent = lib.defConfig.DoubleBomb[i];
+                    // console.log(this._SpeB);
+                }
+            }
+        }
+        if(this.time % 20 == 0)
+        {   
+            this._SpeHArr = [];
+            if(this.time > 80)
+            {
+                for(let i = 0; i < 2 ; i++)
+                {
+                    this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
+                }
+            }
+            else
+            {
+                for(let i = 0; i < lib.defConfig.HealthNum[this.time / 20] ; i++)
+                {
+                    this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
+                }
+            }
+            // console.log(this._SpeHArr);
+        }
+    }
+
     //检验是否可以创建特殊形状
     private createSpeical(){
-        if(this.time % this.SpecialComeTime == 0)
+        this.createSpeArr();
+        if(this.time == this._SpeB)
         {
-            this._SpeArr = [lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),
-                lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime)];
-        }
-        if(this.time % this.SpecialComeTime == this._SpeArr[0])
-        {
-            if(this.time < 60)
+            let temp = lib.RandomParameters.RandomParameters.getRandomInt(100);
+            if(temp < this._SpeBDouPercent)
             {
-                if(!this.UIcon.getHPIsFull())
-                {
-                    this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+                let index = lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length);
+                let parameters = this.birthPoints[index].getRandomFlyParameters();
+                let Ctype:_kits.Characteristic.parameters = {
+                    type: lib.defConfig.character.division,
+                    divisionDistance: 0,
                 }
+                let Dparameters:_kits.Disspation.parameters = {
+                    type: lib.defConfig.dissipate.none,
+                }
+                this.birthPoints[index].createSpecialShape(1,parameters,Dparameters,Ctype);
             }
             else
-            {
-                this._weaveControl.createBlinkSpecial(0);
-            }
-        }
-        if(this.time % this.SpecialComeTime == this._SpeArr[1])
-        {
-            if(this.time <= 30)
-            {
-                if(!this.UIcon.getHPIsFull())
-                {
-                    this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
-                }
-            }
-            else if(this.time < 60)
             {
                 this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
             }
-            else
-            {
-                this._weaveControl.createBlinkSpecial(1);
-            }
         }
-        if(this.time % this.SpecialComeTime == this._SpeArr[2])
+        for(let i = 0; i < this._SpeHArr.length ; i++)
         {
-            if(this.time < 60)
+            if(this.time == this._SpeHArr[i])
             {
-                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
-            }
-            else
-            {
-                this._weaveControl.createBlinkSpecial(1);
+                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
             }
         }
     }

@@ -13,6 +13,7 @@ export default {
     startClock:'startClock',
     Resurrection: 'resurrection',
     SetSXFlag: 'setSanXiaoFlag',
+    StartWeave: 'startWeave',
 
     //音效
     micStartBtn: 'msgStartBtn',

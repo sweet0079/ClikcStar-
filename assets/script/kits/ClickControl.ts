@@ -136,10 +136,6 @@ export default class ClickControl extends cc.Component {
         {
             return; 
         }
-        console.log("CheckSanxiao");
-        console.log(this.SXLastShape);
-        console.log(ShapeArr);
-        console.log("before this.SXComboNum = " + this.SXComboNum);
         //如果没有上次点击数组，将单次点击的形状数组排序后找出数量最多的形状
         if(this.SXLastShape.length == 0)
         {
@@ -220,9 +216,6 @@ export default class ClickControl extends cc.Component {
                 }
             }
         }
-        console.log("CheckSanxiao after");
-        console.log(this.SXLastShape);
-        console.log("after this.SXComboNum = " + this.SXComboNum);
     }
 
     /**

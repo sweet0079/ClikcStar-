@@ -236,3 +236,9 @@ export const negitiveBuff = cc.Enum({
     // 枚举的长度
     length: -1,
 });
+/** 特殊图形生成时间节点 */
+export const SpecialBirthTime = [5,7,14,21,28,35,42,48,54,60,65];
+/** 血包个数 */
+export const HealthNum = [4,4,3,3,2];
+/** 双倍炸弹概率 */
+export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50];

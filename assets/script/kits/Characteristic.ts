@@ -186,8 +186,16 @@ export default class Characteristic extends cc.Component {
         shape2.position = this.node.position;
         shape2.scale = this.node.scale;
         shape2.parent = this.node.parent;
-        ShapeManager.getinstance().addShape(shape1);
-        ShapeManager.getinstance().addShape(shape2);
+        if(this.node.getComponent(ShapeControl).isSpecial)
+        {
+            ShapeManager.getinstance().addSpecial(shape1);
+            ShapeManager.getinstance().addSpecial(shape2);
+        }
+        else
+        {
+            ShapeManager.getinstance().addShape(shape1);
+            ShapeManager.getinstance().addShape(shape2);
+        }
         ShapeManager.getinstance().delShape(this.node);
         this.node.destroy();
     }
