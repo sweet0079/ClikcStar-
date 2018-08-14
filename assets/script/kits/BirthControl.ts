@@ -4,6 +4,7 @@ import birthPointControl from './BirthPoint'
 import ShapeManager from './ShapeManager'
 import weaveControl from './weaveControl'
 import UIControl from './UIControl'
+import BossTimeInstance from './BossTimeInstance';
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -23,6 +24,8 @@ export default class BirthControl extends cc.Component {
     @property([birthPointControl]) birthPoints: Array<birthPointControl> = [];
     //UI控制组件
     @property(UIControl) UIcon: UIControl = null;
+    /** 特殊的预制体 */
+    @property(cc.Prefab) bossprefeb: cc.Prefab = null;
 
     //----- 属性声明 -----//
     //已运行时间
@@ -34,7 +37,7 @@ export default class BirthControl extends cc.Component {
     //套路已持续时间
     private weaveRunTime = 0;
     //套路是否开始标识符
-    private weaveFlag:boolean = false;
+    private bossFlag:boolean = false;
     //套路控制组件
     private _weaveControl:weaveControl = null;
     //特殊图形炸弹出现时间
@@ -81,13 +84,13 @@ export default class BirthControl extends cc.Component {
     setweaveRunTime(num){
         this.weaveRunTime = num;
     }
-    setweaveFlag(flag:boolean)
+    setbossFlag(flag:boolean)
     {
-        this.weaveFlag = flag;
+        this.bossFlag = flag;
     }
-    getweaveFlag()
+    getbossFlag()
     {
-        return this.weaveFlag;
+        return this.bossFlag;
     }
     addtime(){
         this.time += 0.5;
@@ -136,9 +139,10 @@ export default class BirthControl extends cc.Component {
         this.unschedule(this.clockFun);
         this.time = 0;
         this.interval = 0;
-        this.weaveFlag = false;
+        this.bossFlag = false;
         this.weaveTime = 0;
         this.weaveRunTime = 0;
+        BossTimeInstance.getinstance().setisBossTime(false);
         for(let i = 0; i < this.birthPoints.length; i++)
         {
             this.birthPoints[i].resetSpeed();
@@ -147,6 +151,27 @@ export default class BirthControl extends cc.Component {
     }
 
     //----- 私有方法 -----//
+    //创建boss
+    private createBoss()
+    {
+            if(this.getweaveRunTime() == 0)
+            {
+                lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
+            }
+            this.setweaveRunTime(this.getweaveRunTime() + 0.5);
+            if(this.getweaveRunTime() == lib.defConfig.WarningTime)
+            {
+                lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
+                let boss = cc.instantiate(this.bossprefeb);
+                boss.parent = this.birthPoints[0].shapeParNode;
+                BossTimeInstance.getinstance().setisBossTime(true);
+                this.scheduleOnce(()=>{
+                    this.bossFlag = false;
+                },lib.defConfig.BossComingTime);
+            }
+    }
+
+    //新手引导
     private NoviceGuidance(){
         this._weaveControl.createNoviceGuidance();
         this.UIcon.showNoviceGuidance();
@@ -157,7 +182,7 @@ export default class BirthControl extends cc.Component {
     }
     //根据时间增长，创建形状、提高难度
     private clockFun(){
-        if(!this.weaveFlag)
+        if(!this.bossFlag)
         {
             this.checkCreate();
             this.time += 0.5;
@@ -171,7 +196,8 @@ export default class BirthControl extends cc.Component {
         }
         else
         {
-            this._weaveControl.Weave();
+            // this._weaveControl.Weave();
+            this.createBoss();
         }
     }
 
@@ -266,7 +292,7 @@ export default class BirthControl extends cc.Component {
         //判断套路是否结束
         if(this.time != 0 && this.time % this.WeaveComeTime == 0)
         {
-            this.weaveFlag = true;
+            this.bossFlag = true;
             this.weaveTime = 0;
             this.weaveRunTime = 0;
         }

@@ -1,6 +1,5 @@
 /** 挂在形状的背景节点，用于监听触摸结束 */
 import * as lib from '../lib/lib'
-// import touchInstance from "./touchInstance"
 import UIControl from './UIControl'
 
 const {ccclass, property} = cc._decorator;

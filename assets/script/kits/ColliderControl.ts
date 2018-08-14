@@ -32,11 +32,16 @@ export default class ColliderControl extends cc.Component {
         {
             score = 0;
         }
-        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+        // lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         ShapeManager.getinstance().delShape(this.node);
-        this.node.parent.getComponent(ShapeControl).destroyAni();
-        lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
-        lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.parent.getPositionX(),this.node.parent.getPositionY()));
+        let act = cc.scaleTo(0.2,0);
+        let seq = cc.sequence(act,cc.callFunc(()=>{
+            this.node.parent.destroy();
+        }));
+        this.node.runAction(seq);
+        // this.node.parent.getComponent(ShapeControl).destroyAni();
+        // lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+        // lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.parent.getPositionX(),this.node.parent.getPositionY()));
         this.hasDes = true;
     }
 }

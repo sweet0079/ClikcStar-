@@ -4,7 +4,6 @@ import FlyingShape from './FlyingShape'
 import ClickEndControl from './ClickEnd'
 import ShapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
-// import touchInstance from "./touchInstance"
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;

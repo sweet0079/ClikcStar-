@@ -42,6 +42,8 @@ export default class ClickControl extends cc.Component {
     private ShowScorePos: cc.Vec2 = cc.v2(0,0);
     //清屏回调标识
     private SanxiaoFlag: boolean = false;
+    //combo数字的节点
+    private ComboLabelNode: cc.Node = null;
 
     //----- 生命周期 -----//
 
@@ -90,7 +92,7 @@ export default class ClickControl extends cc.Component {
      */
     private CalAddPower(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
         let basepower = ScoreInfoArr.length * 10;
-        if(this.birthLayout.getweaveFlag())
+        if(this.birthLayout.getbossFlag())
         {
             return basepower;
         }
@@ -225,7 +227,7 @@ export default class ClickControl extends cc.Component {
      * @private
      */
     private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
-        if(this.birthLayout.getweaveFlag())
+        if(this.birthLayout.getbossFlag())
         {
             return;
         }
@@ -332,7 +334,7 @@ export default class ClickControl extends cc.Component {
 
     //显示combo数
     private ShowCombo(){
-        if(this.birthLayout.getweaveFlag())
+        if(this.birthLayout.getbossFlag())
         {
             return;
         }
@@ -340,13 +342,19 @@ export default class ClickControl extends cc.Component {
         {
             return;
         }   
+        if(this.ComboLabelNode)
+        {
+            this.ComboLabelNode.destroy();
+        }
         let node = cc.instantiate(this.comboPfb);
         node.getChildByName("number").getComponent(cc.Label).string = this.ComboNum.toString();
         let ani = node.getComponent(cc.Animation);
         ani.once('finished',()=>{
             node.destroy();
+            this.ComboLabelNode = null;
         },this);
         node.parent = this.Ziparent;
+        this.ComboLabelNode = node;
         ani.play();
     }
 

@@ -66,7 +66,7 @@ export default class PowerFullControl extends cc.Component {
         //75%几率套路效果
         else
         {
-            lib.msgEvent.getinstance().emit(lib.msgConfig.StartWeave);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.StartWeave,parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString()));
         }
         // this.assimilation();
     }

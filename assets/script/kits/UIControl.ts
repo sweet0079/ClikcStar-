@@ -2,7 +2,6 @@
 import * as lib from '../lib/lib'
 import ShapeManager from './ShapeManager'
 import powerFullcontrol from './PowerFullCon'
-// import touchInstance from "./touchInstance"
 import HPBarCon from "./HPBarControl"
 import EffectCon from "./EffectControl"
 
@@ -65,6 +64,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickBoss,"resetTIME",this);
         // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
         // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
     }
@@ -75,6 +75,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.clickBoss,"resetTIME",this);
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
@@ -204,11 +205,11 @@ export default class UIcontrol extends cc.Component {
         this.OverLayer.active = true;
     }
 
-    showarn(num:number){
+    showarn(){
         if(this.warning)
         {
             this.warning.active = true;
-            this.warning.getChildByName("warningLabel").getComponent(cc.Label).string = num + "个星星正在来袭";
+            // this.warning.getChildByName("warningLabel").getComponent(cc.Label).string = num + "个星星正在来袭";
             //let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.delayTime(0.5),cc.fadeOut(0.5)));
             //this.warning.runAction(act);
             let round = cc.instantiate(this.RedRound);

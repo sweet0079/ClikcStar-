@@ -64,29 +64,29 @@ export default class weaveControl extends cc.Component {
         shape.parent = this._birthControl.birthPoints[0].getShapeParentNode();
     }
     //套路开始主方法
-    Weave(){
-        let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
-        let tempNum = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.BlinkArr.length);
-        if(this._birthControl.getweaveRunTime() == 0)
-        {
-            this._weavetype = weavetype;
-            this._tempNum = tempNum;
-            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn,this.getComingShapeNum(this._weavetype,this._tempNum));
-        }
-        this._birthControl.setweaveRunTime(this._birthControl.getweaveRunTime() + 0.5);
-        if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime)
-        {
-            lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
-            this.CreateWeave(this._weavetype);
-            // // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.ladder();
-        }
-        if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
-        {
-            this._birthControl.setweaveFlag(false);
-            this._birthControl.addtime();
-        }
-    }
+    // Weave(){
+    //     let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
+    //     let tempNum = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.BlinkArr.length);
+    //     if(this._birthControl.getweaveRunTime() == 0)
+    //     {
+    //         this._weavetype = weavetype;
+    //         this._tempNum = tempNum;
+    //         lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn,this.getComingShapeNum(this._weavetype,this._tempNum));
+    //     }
+    //     this._birthControl.setweaveRunTime(this._birthControl.getweaveRunTime() + 0.5);
+    //     if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime)
+    //     {
+    //         lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
+    //         this.CreateWeave(this._weavetype);
+    //         // // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+    //         // this.ladder();
+    //     }
+    //     if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
+    //     {
+    //         this._birthControl.setweaveFlag(false);
+    //         this._birthControl.addtime();
+    //     }
+    // }
     //----- 私有方法 -----//
     private CreateWeave(type:number){
         switch(type)

@@ -14,6 +14,7 @@ export default {
     Resurrection: 'resurrection',
     SetSXFlag: 'setSanXiaoFlag',
     StartWeave: 'startWeave',
+    clickBoss: 'clickBoss',
 
     //音效
     micStartBtn: 'msgStartBtn',

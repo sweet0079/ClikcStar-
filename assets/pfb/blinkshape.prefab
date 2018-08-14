@@ -433,6 +433,15 @@
     "playOnLoad": false
   },
   {
+    "__type__": "a60d0zppZpIhqrGTeImowhF",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true
+  },
+  {
     "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
@@ -446,16 +455,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 137
-  },
-  {
-    "__type__": "a60d0zppZpIhqrGTeImowhF",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true
+    "_radius": 80
   },
   {
     "__type__": "cc.PrefabInfo",

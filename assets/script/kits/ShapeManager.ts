@@ -28,22 +28,22 @@ export default class ShapeManager {
     private _frozen:boolean;
     private _doubleScore:boolean;
 
-    //开启冰冻
+    //返回是否是双倍分数
     getDoubleScore(){
         return this._doubleScore;
     }
 
-    //开启冰冻
+    //设置是否是双倍分数
     setDoubleScore(Flag:boolean){
         this._doubleScore = Flag;
     }
 
-    //开启冰冻
+    //返回是否是冰冻
     getFrozen(){
         return this._frozen;
     }
 
-    //开启冰冻
+    //设置是否是冰冻
     setFrozen(Flag:boolean){
         this._frozen = Flag;
     }

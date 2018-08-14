@@ -1,8 +1,9 @@
 /** 用于控制形状的飞行轨迹 */
-import * as lib from '../lib/lib'
-import Dissipation from './Disspation'
-import shapeControl from './ShapeControl'
+import * as lib from '../lib/lib';
+import Dissipation from './Disspation';
+import shapeControl from './ShapeControl';
 import ShapeManager from './ShapeManager';
+import BossTimeInstance from './BossTimeInstance';
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -85,6 +86,11 @@ export default class FlyingShape extends cc.Component {
     update (dt) {
         if(this.stopFlag)
         {
+            return;
+        }
+        if(BossTimeInstance.getinstance().getisBossTime() && this._shapeControl.isSpecial == false)
+        {
+            this.flyToPoint(dt,BossTimeInstance.getinstance().getbossPos());
             return;
         }
         if(ShapeManager.getinstance().getFrozen())
@@ -229,6 +235,13 @@ export default class FlyingShape extends cc.Component {
         this.TurnAngle = parameter.TurnAngle;
     }
     //----- 私有方法 -----//
+    //飞向某个点
+    private flyToPoint(dt,pos:cc.Vec2){
+        let angle = Math.atan((this.node.y - pos.y) / (this.node.x - pos.x));
+        this.node.x += this.Speed * dt * Math.cos(angle) * 2;
+        this.node.y += this.Speed * dt * Math.sin(angle) * 2;
+    }
+
     //直线飞行方法
     private flystraight(dt){
 
