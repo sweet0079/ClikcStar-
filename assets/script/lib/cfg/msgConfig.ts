@@ -15,6 +15,7 @@ export default {
     SetSXFlag: 'setSanXiaoFlag',
     StartWeave: 'startWeave',
     clickBoss: 'clickBoss',
+    ShowClock: 'ShowClock',
 
     //音效
     micStartBtn: 'msgStartBtn',

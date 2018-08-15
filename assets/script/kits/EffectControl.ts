@@ -8,6 +8,7 @@ export default class EffectControl extends cc.Component {
     @property(cc.Animation) Health: cc.Animation = null;
     @property(cc.ProgressBar) DoubleLabel: cc.ProgressBar = null;
     @property(cc.ProgressBar) FrozenPB: cc.ProgressBar = null;
+    @property(cc.ProgressBar) BossPB: cc.ProgressBar = null;
     //----- 属性声明 -----//
     //----- 生命周期 -----//
     //----- 按钮回调 -----//
@@ -41,6 +42,18 @@ export default class EffectControl extends cc.Component {
                 this.FrozenPB.node.parent.active = false;
             }
         },0.05,100);
+    }
+
+    showClock(time:number){
+        this.BossPB.node.parent.active = true;
+        this.BossPB.progress = 1;
+        this.schedule(()=>{
+            this.BossPB.progress -= 1 / (time / 0.05);
+            if(this.BossPB.progress <= 0.01)
+            {
+                this.BossPB.node.parent.active = false;
+            }
+        },0.05,time / 0.05);
     }
     //----- 私有方法 -----//
 

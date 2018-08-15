@@ -3,44 +3,22 @@
   "_name": "boss",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.26666666666666666,
+  "_duration": 0.8333333333333334,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "22",
+  "wrapMode": "2",
   "curveData": {
-    "paths": {
-      "boss": {
-        "comps": {
-          "cc.Sprite": {
-            "spriteFrame": [
-              {
-                "frame": 0,
-                "value": {
-                  "__uuid__": "ec17b796-b8f9-42dc-9c61-07915770ee4b"
-                }
-              },
-              {
-                "frame": 0.08333333333333333,
-                "value": {
-                  "__uuid__": "2220725c-aaa0-4f95-a525-dc45e4c5f1d6"
-                }
-              },
-              {
-                "frame": 0.16666666666666666,
-                "value": {
-                  "__uuid__": "62c64084-c890-49f4-a68f-f33d65e5543c"
-                }
-              },
-              {
-                "frame": 0.25,
-                "value": {
-                  "__uuid__": "ebdf1736-57b6-4156-8922-df3c04c9930a"
-                }
-              }
-            ]
-          }
+    "props": {
+      "rotation": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": -180
         }
-      }
+      ]
     }
   },
   "events": []

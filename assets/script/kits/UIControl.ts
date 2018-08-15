@@ -65,6 +65,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickBoss,"resetTIME",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowClock,"ShowClock",this);
         // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
         // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
     }
@@ -76,6 +77,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.clickBoss,"resetTIME",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ShowClock,"ShowClock",this);
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
@@ -232,6 +234,10 @@ export default class UIcontrol extends cc.Component {
         {
             this.warning.active = false;
         }
+    }
+
+    ShowClock(time:number){
+        this.EffectNode.showClock(time);
     }
     //----- 公有方法 -----//
     //双倍分数特效

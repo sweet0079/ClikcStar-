@@ -50,6 +50,8 @@ export default class BirthControl extends cc.Component {
     // onLoad () {}
 
     start () {
+        this.bossFlag = false;
+        BossTimeInstance.getinstance().setisBossTime(false);
         this._weaveControl = this.node.getComponent(weaveControl);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
@@ -154,21 +156,22 @@ export default class BirthControl extends cc.Component {
     //创建boss
     private createBoss()
     {
-            if(this.getweaveRunTime() == 0)
-            {
-                lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
-            }
-            this.setweaveRunTime(this.getweaveRunTime() + 0.5);
-            if(this.getweaveRunTime() == lib.defConfig.WarningTime)
-            {
-                lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
-                let boss = cc.instantiate(this.bossprefeb);
-                boss.parent = this.birthPoints[0].shapeParNode;
-                BossTimeInstance.getinstance().setisBossTime(true);
-                this.scheduleOnce(()=>{
-                    this.bossFlag = false;
-                },lib.defConfig.BossComingTime);
-            }
+        if(this.getweaveRunTime() == 0)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
+        }
+        this.setweaveRunTime(this.getweaveRunTime() + 0.5);
+        if(this.getweaveRunTime() == lib.defConfig.WarningTime)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowClock,lib.defConfig.BossComingTime + lib.defConfig.BossLivingTime);
+            let boss = cc.instantiate(this.bossprefeb);
+            boss.parent = this.birthPoints[0].shapeParNode;
+            BossTimeInstance.getinstance().setisBossTime(true);
+            this.scheduleOnce(()=>{
+                this.bossFlag = false;
+            },lib.defConfig.BossComingTime);
+        }
     }
 
     //新手引导

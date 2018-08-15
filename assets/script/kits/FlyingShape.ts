@@ -238,8 +238,16 @@ export default class FlyingShape extends cc.Component {
     //飞向某个点
     private flyToPoint(dt,pos:cc.Vec2){
         let angle = Math.atan((this.node.y - pos.y) / (this.node.x - pos.x));
-        this.node.x += this.Speed * dt * Math.cos(angle) * 2;
-        this.node.y += this.Speed * dt * Math.sin(angle) * 2;
+        if(this.node.x < pos.x)
+        {
+            this.node.x += Math.abs(this.Speed) * dt * Math.cos(angle) * 2;
+            this.node.y += Math.abs(this.Speed) * dt * Math.sin(angle) * 2;
+        }
+        else
+        {
+            this.node.x -= Math.abs(this.Speed) * dt * Math.cos(angle) * 2;
+            this.node.y -= Math.abs(this.Speed) * dt * Math.sin(angle) * 2;
+        }
     }
 
     //直线飞行方法

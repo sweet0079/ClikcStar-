@@ -58,6 +58,7 @@ export default class ClickControl extends cc.Component {
     }
 
     onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.SetSXFlag,"setSXFlag",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.clickStart,"add",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Settlement,"settlement",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);

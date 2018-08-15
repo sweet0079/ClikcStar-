@@ -1,4 +1,5 @@
 import * as defConfig from '../cfg/defConfig'
+import { _kits } from '../../../../libdts/kits';
 
 /** 一个生成随机形状组件参数的类 */
 export const RandomParameters = {

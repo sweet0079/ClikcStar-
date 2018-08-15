@@ -32,9 +32,13 @@ export default class weaveControl extends cc.Component {
     }
 
     start () {
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.StartWeave,"CreateWeave",this);
     }
 
     // update (dt) {} 
+    onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.StartWeave,"CreateWeave",this);
+    }
     //----- 公有方法 -----//
     //创建新手引导的形状
     createNoviceGuidance(){

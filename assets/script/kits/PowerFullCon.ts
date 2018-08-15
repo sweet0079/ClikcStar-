@@ -28,7 +28,7 @@ export default class PowerFullControl extends cc.Component {
     CreateSpecial(){
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(100);
         // 25%几率负面效果
-        if(temp < 25)
+        if(temp < 20)
         {
             let temp = parseInt((cc.random0To1() * (lib.defConfig.negitiveBuff.length)).toString());
             switch(temp)
@@ -39,7 +39,7 @@ export default class PowerFullControl extends cc.Component {
             }
         }
         //75%几率正面效果
-        else if(temp < 100)
+        else if(temp < 80)
         {
             let temp = parseInt((cc.random0To1() * (lib.defConfig.positiveBuff.length)).toString());
             switch(temp)
