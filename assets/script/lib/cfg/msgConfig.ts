@@ -25,4 +25,6 @@ export default {
     micClickShape: 'clickShape',
     micClickStart: 'clickStart',
     micclickCombo: 'clickCombo',
+    micPlayBGM: 'playBGM',
+    micPlayBossBGM: 'playBossBGM',
 }

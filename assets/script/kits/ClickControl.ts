@@ -383,7 +383,14 @@ export default class ClickControl extends cc.Component {
                 return;
             }
             let sco = cc.instantiate(this.scorePfb);
-            sco.getComponent(cc.Label).string = this.ShowScore.toString();
+            if(this.ShowScore >= 0)
+            {
+                sco.getComponent(cc.Label).string = this.ShowScore.toString();
+            }
+            else
+            {
+                sco.getComponent(cc.Label).string = "/" + Math.abs(this.ShowScore).toString();
+            }
             sco.setPosition(this.ShowScorePos);
             sco.y += 75;
             sco.parent = this.Ziparent;

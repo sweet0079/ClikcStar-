@@ -196,8 +196,10 @@ export const BlinkArr = cc.Enum({
 });
 //Boss飞入屏幕需要的时间
 export const BossComingTime = 2;
-//Boss存货时间
+//Boss存活时间
 export const BossLivingTime = 5;
+//Boss死亡淡出时间
+export const BossDieTime = 1;
 //套路开始前warning持续时间
 export const WarningTime = 3;
 //套路结束后持续时间

@@ -10,6 +10,7 @@ export default class NewClass extends lib.ccAudioPlayer  {
     //----- 静态方法 -----//
     //----- 属性声明 -----//
     private bg = 'res/raw-assets/mic/Stars_BGM.mp3';
+    private Bossbg = 'res/raw-assets/mic/Stars_Boss_BGM.mp3';
     private startBtn = 'res/raw-assets/mic/Stars_ui_start.mp3';
     private button = 'res/raw-assets/mic/Stars_ui_menu.mp3';
 
@@ -49,6 +50,12 @@ export default class NewClass extends lib.ccAudioPlayer  {
     msgclickCombo(){
         this.play(6, this.clickCombo, false);
     }
+    msgPlayBGM(){
+        this.play(0, this.bg, true);
+    }
+    msgPlayBossBGM(){
+        this.play(0, this.Bossbg, true);
+    }
     //----- 按键回调 -----//
     //----- 生命周期 -----//
 
@@ -67,10 +74,12 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.addEvent(lib.msgConfig.micClickStart, 'msgclickStart', this);   
         msgEvent.addEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);      
         msgEvent.addEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);   
+        msgEvent.addEvent(lib.msgConfig.micPlayBGM, 'msgPlayBGM', this);   
+        msgEvent.addEvent(lib.msgConfig.micPlayBossBGM, 'msgPlayBossBGM', this);   
     }
     start() {
         super.start();
-        this.play(0, this.bg, true);
+        this.msgPlayBGM();
     }
     onDestroy() {
         let msgEvent = lib.msgEvent.getinstance();
@@ -82,7 +91,9 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.removeEvent(lib.msgConfig.micMinHP, 'msgclickBG', this);   
         msgEvent.removeEvent(lib.msgConfig.micClickStart, 'msgclickStart', this);   
         msgEvent.removeEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);    
-        msgEvent.removeEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);       
+        msgEvent.removeEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);     
+        msgEvent.removeEvent(lib.msgConfig.micPlayBGM, 'msgPlayBGM', this);   
+        msgEvent.removeEvent(lib.msgConfig.micPlayBossBGM, 'msgPlayBossBGM', this);     
         super.onDestroy();
     }
 }

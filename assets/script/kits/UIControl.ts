@@ -417,9 +417,17 @@ export default class UIcontrol extends cc.Component {
     }
     private _addScore(score:number){
         this.score += score;
-        this.Socrelabel.string = this.score.toString();
         let subscore = this.Socrelabel.node.getChildByName("subscore");
-        subscore.getComponent(cc.Label).string = this.score.toString();
+        if(this.score >= 0)
+        {
+            this.Socrelabel.string = this.score.toString();
+            subscore.getComponent(cc.Label).string = this.score.toString();
+        }
+        else
+        {
+            this.Socrelabel.string = "/" + Math.abs(this.score).toString();
+            subscore.getComponent(cc.Label).string = "/" + Math.abs(this.score).toString();
+        }
         subscore.getComponent(cc.Animation).play();
     }
 

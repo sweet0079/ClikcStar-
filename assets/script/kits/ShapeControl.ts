@@ -156,7 +156,7 @@ export default class ShapeControl extends cc.Component {
                 // this.setClickJudgeFun((x,y) => {
                 //     return this._trianglegetIsClickShape(x,y);
                 // });
-                this.setClickJudgeFun(this._trianglegetIsClickShape);
+                // this.setClickJudgeFun(this._trianglegetIsClickShape);
                 calNode.children[0].setPositionY(-20);
                 calNode.children[1].setPositionY(-20);
             }

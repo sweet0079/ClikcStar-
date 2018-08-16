@@ -1,5 +1,5 @@
 /** 控制是否是boss时间的单例 */
-// import * as lib from '../lib/lib'
+import * as lib from '../lib/lib'
 
 export default class BossTimeInstance {
     static instance: BossTimeInstance
@@ -37,9 +37,14 @@ export default class BossTimeInstance {
 
     setisBossTime(flag:boolean){
         this.isBossTime = flag;
-        if(flag = false)
+        if(flag == false)
         {
             this.bossPos = new cc.Vec2(0,0);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.micPlayBGM);
+        }
+        else
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.micPlayBossBGM);
         }
     }
 }
