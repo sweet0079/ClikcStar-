@@ -228,10 +228,10 @@ export default class ClickControl extends cc.Component {
      * @private
      */
     private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
-        if(this.birthLayout.getbossFlag())
-        {
-            return;
-        }
+        // if(this.birthLayout.getbossFlag())
+        // {
+        //     return;
+        // }
         //将对象数组整理为形状数组
         let ShapeArr = [];
         for(let i = 0 ; i < ScoreInfoArr.length ; i++)
@@ -335,10 +335,10 @@ export default class ClickControl extends cc.Component {
 
     //显示combo数
     private ShowCombo(){
-        if(this.birthLayout.getbossFlag())
-        {
-            return;
-        }
+        // if(this.birthLayout.getbossFlag())
+        // {
+        //     return;
+        // }
         if(this.ComboNum < 3)
         {
             return;
@@ -404,24 +404,23 @@ export default class ClickControl extends cc.Component {
 
     //显示good字样
     private showGood(){
-        if(this.ComboNum == 15)
+        if(this.ComboNum == 4)
         {
             this.createZiSprite(this.ZiSpf[0]);
         }
-        else if((this.ComboNum - 15) / 10 == 1)
+        else if(this.ComboNum == 5)
         {
             this.createZiSprite(this.ZiSpf[1]);
         }
-        else if((this.ComboNum - 15) / 10 == 2)
+        else if(this.ComboNum == 6)
         {
             this.createZiSprite(this.ZiSpf[2]);
         }
-        else if((this.ComboNum - 15) / 10 == 3)
+        else if(this.ComboNum == 7)
         {
             this.createZiSprite(this.ZiSpf[3]);
         }
-        else if((this.ComboNum - 15) % 10 == 0
-        && this.ComboNum >= 55)
+        else if(this.ComboNum >= 8)
         {
             this.createZiSprite(this.ZiSpf[4]);
         }
@@ -472,7 +471,7 @@ export default class ClickControl extends cc.Component {
         // }
     }
 
-    private settlement(){
+    private settlement(flag:boolean = true){
         if(this.ScoreArr.length == 0)
         {
             this.ComboNum = 1;
@@ -518,14 +517,17 @@ export default class ClickControl extends cc.Component {
             this.ShowScore = score;
             lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
-        this.UIcon.addPOWER(this.CalAddPower(this.ScoreArr));
-        this.ScoreArr = [];
         this.ShowCombo();
         this.showGood();
         if(this.SXComboNum >= 3)
         {
             this.CleanSameShape();
         }
+        if(flag)
+        {
+            this.UIcon.addPOWER(this.CalAddPower(this.ScoreArr));
+        }
+        this.ScoreArr = [];
     }
 
     //找出数组中数量最多的元素(已排序过的数组)

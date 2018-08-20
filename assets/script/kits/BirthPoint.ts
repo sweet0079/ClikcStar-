@@ -321,7 +321,14 @@ export default class BirthPoint extends cc.Component {
         this.shapeSetdiss(shape,dispare);
         //随机形状的外形参数
         shape.getComponent(shapeControl).randomcolor();
-        shape.getComponent(shapeControl).randomShape();
+        if(ShapeManager.getinstance().getassimilation())
+        {
+            shape.getComponent(shapeControl).setShape(ShapeManager.getinstance().getassimilationShape());
+        }
+        else
+        {
+            shape.getComponent(shapeControl).randomShape();
+        }
         //添加至管理类
         ShapeManager.getinstance().addShape(shape);
         //赋值父节点

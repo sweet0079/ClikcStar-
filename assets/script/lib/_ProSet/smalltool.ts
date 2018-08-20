@@ -12,7 +12,7 @@ export default class NewClass extends cc.Component {
         for(let i = 0; i < this.node.children.length; i++)
         {
             this.node.children[i].name = (i + 1).toString();
-            let angle = i * 10 * (2 * Math.PI / 360);
+            let angle = i * -10 * (2 * Math.PI / 360);
             this.node.children[i].x = 120 * Math.sin(angle);
             this.node.children[i].y = 120 * Math.cos(angle);
             this.node.children[i].scale = 0.4;

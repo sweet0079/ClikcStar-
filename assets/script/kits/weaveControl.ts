@@ -729,10 +729,10 @@ export default class weaveControl extends cc.Component {
             // {
             //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
             // }
-            // if(!spareFlag)
-            // {
-            //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-            // }
+            if(!spareFlag)
+            {
+                spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+            }
             let index = i;
             for(let j = 0; j < 3; j++)
             {
@@ -782,10 +782,10 @@ export default class weaveControl extends cc.Component {
             // {
             //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
             // }
-            // if(!spareFlag)
-            // {
-            //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-            // }
+            if(!spareFlag)
+            {
+                spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+            }
             let index = i;
             for(let j = 0; j < 1; j++)
             {
@@ -930,10 +930,10 @@ export default class weaveControl extends cc.Component {
             // {
             //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
             // }
-            // if(!spareFlag)
-            // {
-            //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-            // }
+            if(!spareFlag)
+            {
+                spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+            }
             this._birthControl.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
         }
     }
@@ -1025,10 +1025,10 @@ export default class weaveControl extends cc.Component {
                 // {
                 //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
                 // }
-                // if(!spareFlag)
-                // {
-                //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-                // }
+                if(!spareFlag)
+                {
+                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
                 this._birthControl.birthPoints[temp].createAppointShape(fpare,dpare,cpare,spare);
             },i * 0.5);
         }
@@ -1083,10 +1083,10 @@ export default class weaveControl extends cc.Component {
                     // {
                     //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
                     // }
-                    // if(!spareFlag)
-                    // {
-                    //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-                    // }
+                    if(!spareFlag)
+                    {
+                        spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                    }
                     // if(reverse)
                     // {
                     //     if(this._birthControl.birthPoints[lib.RandomParameters.RandomParameters.getSymmetricPoint(pointArr[j])].JudgeAngleLegality(-angle))

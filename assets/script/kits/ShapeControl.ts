@@ -39,6 +39,28 @@ export default class ShapeControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         //this.setShape(2);
+        this.schedule(()=>{
+            if(this.isSpecial)
+            {
+                return;
+            }
+            if(ShapeManager.getinstance().getbig())
+            {
+                this.node.scale = 2;
+            }
+            else
+            {
+                this.node.scale = 1.5;
+            }
+            if(ShapeManager.getinstance().getsmall())
+            {
+                this.node.scale = 1;
+            }
+            else
+            {
+                this.node.scale = 1.5;
+            }
+        },0.5);
     }
 
     // update (dt) {}

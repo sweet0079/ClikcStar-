@@ -16,6 +16,8 @@ export default class StartGame extends cc.Component {
     @property(cc.Node) soundBtn: cc.Node = null;
     @property([cc.SpriteFrame]) micBtnSpf: Array<cc.SpriteFrame> = [];
     @property([cc.SpriteFrame]) soundBtnSpf: Array<cc.SpriteFrame> = [];
+    //Help界面
+    @property(cc.Node) HelpLayer: cc.Node = null;
     
     // onLoad () {}
 
@@ -79,6 +81,15 @@ export default class StartGame extends cc.Component {
         this._updaetSubDomainCanvas();
     }
     //----- 按钮回调 -----//
+    clickHelp(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        this.HelpLayer.active = true;
+    }
+
+    closeHelp(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        this.HelpLayer.active = false;
+    }
     startGame(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.micStartBtn);
         this.LoadLayer.active = true;

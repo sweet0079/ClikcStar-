@@ -197,7 +197,7 @@ export const BlinkArr = cc.Enum({
 //Boss飞入屏幕需要的时间
 export const BossComingTime = 2;
 //Boss存活时间
-export const BossLivingTime = 5;
+export const BossLivingTime = 7;
 //Boss死亡淡出时间
 export const BossDieTime = 1;
 //套路开始前warning持续时间
@@ -219,7 +219,7 @@ export const MAXPOWER = 500;
 //power梯度
 export const POWERLap = 5;
 //time上限
-export const MAXTIME = 7;
+export const MAXTIME = 5;
 //角度和弧度的转化系数
 export const coefficient = 2 * Math.PI / 360;
 /** 满能量正面效果枚举 */
@@ -234,11 +234,17 @@ export const positiveBuff = cc.Enum({
     doubleScore: -1,
     // 同化
     assimilation: -1,
+    // 放大
+    big: -1,
     // 枚举的长度
     length: -1,
 });
 /** 满能量负面效果枚举 */
 export const negitiveBuff = cc.Enum({
+    // 创建5个炸弹
+    createBomb: -1,
+    // 缩小
+    small: -1,
     // 枚举的长度
     length: -1,
 });
@@ -248,3 +254,5 @@ export const SpecialBirthTime = [5,7,14,21,28,35,42,48,54,60,65];
 export const HealthNum = [4,4,3,3,2];
 /** 双倍炸弹概率 */
 export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50];
+/** boss血量数组 */
+export const bossdifficulty = [18,20,24,25,30,32,36,40];

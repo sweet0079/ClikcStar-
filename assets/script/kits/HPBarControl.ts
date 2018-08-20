@@ -55,7 +55,10 @@ export default class HPBarControl extends cc.Component {
     private ReActiveHp(num){
         for(let i = 0; i < num; i++)
         {
+            this.node.children[i].getComponent(cc.Animation).stop();
+            this.node.children[i].getComponent(cc.Sprite).spriteFrame = this.HPPic;
             this.node.children[i].active = true;
+            this.node.children[i].scale = 1;
         }
         for(let i = num + 1; i < this.node.childrenCount; i++)
         {

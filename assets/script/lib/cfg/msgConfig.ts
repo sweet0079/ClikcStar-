@@ -16,6 +16,8 @@ export default {
     StartWeave: 'startWeave',
     clickBoss: 'clickBoss',
     ShowClock: 'ShowClock',
+    HideClock: 'HideClock',
+    negitiveBomb: 'negitiveBomb',
 
     //音效
     micStartBtn: 'msgStartBtn',

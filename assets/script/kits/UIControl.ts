@@ -4,6 +4,7 @@ import ShapeManager from './ShapeManager'
 import powerFullcontrol from './PowerFullCon'
 import HPBarCon from "./HPBarControl"
 import EffectCon from "./EffectControl"
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,6 +23,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
     @property(cc.Node) PauseLayer: cc.Node = null;
+    //Help界面
+    @property(cc.Node) HelpLayer: cc.Node = null;
     // //能量条闪
     // @property(cc.Node) ShanLayer: cc.Node = null;
     //red界面
@@ -66,6 +69,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickBoss,"resetTIME",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowClock,"ShowClock",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideClock,"HideClock",this);
         // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
         // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
     }
@@ -78,9 +82,23 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.clickBoss,"resetTIME",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ShowClock,"ShowClock",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideClock,"HideClock",this);
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
+    clickHelp(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        this.HelpLayer.active = true;
+        cc.director.pause();
+        cc.director.getActionManager().resumeTargets(this.HelpLayer.children);
+    }
+
+    closeHelp(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        this.HelpLayer.active = false;
+        cc.director.resume();
+    }
+
     clickShare(){
         lib.wxFun.shareAppMessage("好想要天上的星星!好，现在就给你摘!","res/raw-assets/pic/jietu.png");
         if(!this.firstDie)
@@ -101,9 +119,20 @@ export default class UIcontrol extends cc.Component {
                     score:this.score,
                 })
             }
-            cc.director.loadScene("startScene");
+            this.OverLayer.getChildByName("Share").getChildByName("label2").active = false;
+            this.OverLayer.getChildByName("Share").getChildByName("label1").active = false;
+            if(this.score >= 0)
+            {
+                this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = this.score.toString();
+            }
+            else
+            {
+                this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = "/" + Math.abs(this.score).toString();
+            }
+            // cc.director.loadScene("startScene");
         }
     }
+
     //新手引导点击
     NoviceGuidanceClick(){
         if(this.NoviceGuidance.getChildByName("mask1").active == true)
@@ -203,7 +232,14 @@ export default class UIcontrol extends cc.Component {
             this.OverLayer.getChildByName("Share").getChildByName("label1").active = true;
             this.OverLayer.getChildByName("Share").getChildByName("label2").active = false;
         }
-        this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = this.score.toString();
+        if(this.score >= 0)
+        {
+            this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = this.score.toString();
+        }
+        else
+        {
+            this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = "/" + Math.abs(this.score).toString();
+        }
         this.OverLayer.active = true;
     }
 
@@ -238,6 +274,10 @@ export default class UIcontrol extends cc.Component {
 
     ShowClock(time:number){
         this.EffectNode.showClock(time);
+    }
+
+    HideClock(){
+        this.EffectNode.hideClock();
     }
     //----- 公有方法 -----//
     //双倍分数特效
@@ -398,8 +438,7 @@ export default class UIcontrol extends cc.Component {
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
-            this.PowerFullAni();
-            this.powerFull.CreateSpecial();
+            this.PowerFullAni(this.powerFull.CreateSpecial());
         }
             // let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
             // this.ShanLayer.runAction(act);
@@ -407,13 +446,14 @@ export default class UIcontrol extends cc.Component {
     }
 
     //----- 私有方法 -----//
-    private PowerFullAni(){
+    private PowerFullAni(Effectinfo:_kits.PowerFull.EffectInfo){
         this.ShanKuang.getChildByName("tips").active = true;
+        this.ShanKuang.getChildByName("tips").getComponent(cc.Label).string = Effectinfo.Name;
         let dingkuang1 = this.ShanKuang.getChildByName("dingkuang1");
         let dingkuang2 = this.ShanKuang.getChildByName("dingkuang2");
         dingkuang1.runAction(this.act1);
         dingkuang2.runAction(this.act2);
-        this.schedule(this.minPOWER,0.02,50,0.5);
+        this.schedule(this.minPOWER,Effectinfo.time / 50,50,0.5);
     }
     private _addScore(score:number){
         this.score += score;

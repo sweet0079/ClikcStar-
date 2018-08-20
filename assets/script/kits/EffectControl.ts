@@ -32,6 +32,7 @@ export default class EffectControl extends cc.Component {
             }
         },0.05,100);
     }
+    
     ShowFrozenAni(){
         this.FrozenPB.node.parent.active = true;
         this.FrozenPB.progress = 1;
@@ -54,6 +55,10 @@ export default class EffectControl extends cc.Component {
                 this.BossPB.node.parent.active = false;
             }
         },0.05,time / 0.05);
+    }
+
+    hideClock(time:number){
+        this.BossPB.node.parent.active = false;
     }
     //----- 私有方法 -----//
 

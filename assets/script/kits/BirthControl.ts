@@ -6,6 +6,7 @@ import weaveControl from './weaveControl'
 import UIControl from './UIControl'
 import BossTimeInstance from './BossTimeInstance';
 import { _kits } from '../../../libdts/kits';
+import bossControl from './bossControl';
 
 const {ccclass, property} = cc._decorator;
 
@@ -58,6 +59,7 @@ export default class BirthControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.startClock,"startClock",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Resurrection,"Resurrection",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.negitiveBomb,"CreatenegitiveBomb",this);
         if(cc.sys.localStorage.getItem('FirstPlay', 'undefined') == "true")
         {
             this.startClock();
@@ -75,6 +77,7 @@ export default class BirthControl extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.startClock,"startClock",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Resurrection,"Resurrection",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.negitiveBomb,"CreatenegitiveBomb",this);
     }
     //----- 公有方法 -----//
     getbirthPoints(){
@@ -119,6 +122,32 @@ export default class BirthControl extends cc.Component {
     }
     // update (dt) {}
     //----- 事件回调 -----//
+    private CreatenegitiveBomb(){
+        this.schedule(()=>{
+            for(let i = 0 ; i < 5 ; i++)
+            {
+                let temp = lib.RandomParameters.RandomParameters.getRandomInt(100);
+                if(temp < this._SpeBDouPercent)
+                {
+                    let index = lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length);
+                    let parameters = this.birthPoints[index].getRandomFlyParameters();
+                    let Ctype:_kits.Characteristic.parameters = {
+                        type: lib.defConfig.character.division,
+                        divisionDistance: 0,
+                    }
+                    let Dparameters:_kits.Disspation.parameters = {
+                        type: lib.defConfig.dissipate.none,
+                    }
+                    this.birthPoints[index].createSpecialShape(1,parameters,Dparameters,Ctype);
+                }
+                else
+                {
+                    this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
+                }
+            }
+        },1,2);
+    }
+
     private Resurrection(){
         this.schedule(this.clockFun,0.5);
         this.UIcon.initHP();
@@ -151,7 +180,15 @@ export default class BirthControl extends cc.Component {
         }
         this.startClock();
     }
+    
+    private pause(){
+        this.unschedule(this.clockFun);
+        this._weaveControl.unscheduleAllCallbacks();
+    }
 
+    private continue(){
+        this.schedule(this.clockFun,0.5);
+    }
     //----- 私有方法 -----//
     //创建boss
     private createBoss()
@@ -166,6 +203,7 @@ export default class BirthControl extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
             lib.msgEvent.getinstance().emit(lib.msgConfig.ShowClock,lib.defConfig.BossComingTime + lib.defConfig.BossLivingTime);
             let boss = cc.instantiate(this.bossprefeb);
+            boss.getComponent(bossControl).setHP(lib.defConfig.bossdifficulty[lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.bossdifficulty.length)]);
             boss.parent = this.birthPoints[0].shapeParNode;
             BossTimeInstance.getinstance().setisBossTime(true);
             this.scheduleOnce(()=>{
@@ -181,7 +219,7 @@ export default class BirthControl extends cc.Component {
         this.scheduleOnce(()=>{
             ShapeManager.getinstance().pauseAllShape();
             this.UIcon.showNoviceGuidanceMask1();
-        },1)
+        },1);
     }
     //根据时间增长，创建形状、提高难度
     private clockFun(){

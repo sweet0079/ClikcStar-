@@ -3,6 +3,12 @@ import { shape } from "../assets/script/lib/cfg/defConfig";
 /** kits的接口库 */
 declare namespace _kits {
 }
+declare namespace _kits.PowerFull {
+    interface EffectInfo {
+        Name: string,
+        time: number,
+    }
+}
 declare namespace _kits.FlyingShape {
     interface parameters {
         Flightpath: number,

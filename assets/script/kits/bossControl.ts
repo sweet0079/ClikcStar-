@@ -1,6 +1,7 @@
 /** boss控制 */
 import * as lib from '../lib/lib'
 import BossTimeInstance from './BossTimeInstance';
+import bosshpcontrol from './bossHPControl'
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -10,9 +11,11 @@ export default class bossControl extends cc.Component {
 
     //----- 编辑器属性 -----//
     //血量显示
-    @property(cc.Node) HPNode: cc.Node = null;
+    @property(bosshpcontrol) HPNode: bosshpcontrol = null;
     //烟花
     @property(cc.Prefab) FWprefab: cc.Prefab = null;
+    //星星被点击特效
+    @property(cc.Prefab) StarDiss: cc.Prefab = null;
 
     //----- 属性声明 -----//
     /** boss血量 */
@@ -21,6 +24,8 @@ export default class bossControl extends cc.Component {
     private _score: number = 0;
     /** boss速度 */
     private _speed: number = 300;
+    /** boss时间 */
+    private _time: number = 0;
     /** boss速度上限 */
     private _speedUpperLimit: number = 600;
     /** boss移动的目标位置 */
@@ -31,7 +36,6 @@ export default class bossControl extends cc.Component {
     // onLoad () {}
 
     start () {
-        this.initHP();
         // this.HPlabel.string = this._hp.toString();
         this.node.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this.ClickBoss(event);
@@ -41,6 +45,11 @@ export default class bossControl extends cc.Component {
     }
 
     update (dt) {
+        // this._time += dt;
+        // if(this._time > lib.defConfig.BossLivingTime + lib.defConfig.BossComingTime)
+        // {
+        //     this.Leave();
+        // }
         BossTimeInstance.getinstance().setbossPos(this.node.getPosition());
         this.flyToPoint(dt,this._NextPos);
         if(this.AboutEqualPos(this.node.getPosition(),this._NextPos))
@@ -49,11 +58,17 @@ export default class bossControl extends cc.Component {
         }
     }
     onDestroy(){
-        this.node.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
-            this.ClickBoss(event);
-        });
+        // this.node.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
+        //     this.ClickBoss(event);
+        // });
     }
     //----- 公有方法 -----//
+    setHP(num:number)
+    {
+        this._hp = num;
+        this.HPNode.setHp(this._hp);
+        this.initHP();
+    }
     onCollisionEnter(other, self)
     {
         this._score++;
@@ -63,6 +78,14 @@ export default class bossControl extends cc.Component {
         }
     }
     //----- 事件回调 -----//
+    private pause(){
+        this.unschedule(this.clockFun);
+        this._weaveControl.unscheduleAllCallbacks();
+    }
+
+    private continue(){
+        this.schedule(this.clockFun,0.5);
+    }
     //----- 私有方法 -----//
     /** 点击boss方法 */
     private ClickBoss(event:cc.Event.EventTouch){
@@ -70,6 +93,7 @@ export default class bossControl extends cc.Component {
         {
             return;
         }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micClickStart);
         this.minHP();
         lib.msgEvent.getinstance().emit(lib.msgConfig.clickBoss);
         if(this._hp <= 0)
@@ -90,20 +114,20 @@ export default class bossControl extends cc.Component {
         // this.node.runAction(seq);
         // // this.node.runAction(rota);
         let act = cc.spawn(cc.scaleTo(lib.defConfig.BossDieTime,0),cc.moveTo(lib.defConfig.BossDieTime,0,0));
-        for(let i = 0; i < this.HPNode.childrenCount; i++)
+        for(let i = 0; i < this.HPNode.node.childrenCount; i++)
         {
-            this.HPNode.children[i].runAction(act.clone());
+            this.HPNode.node.children[i].runAction(act.clone());
         }
         this.die(-50);
     }
 
     /** 初始化boss血量 */
     private initHP(){
-        for(let i = 0; i < this.HPNode.childrenCount; i++)
+        for(let i = 0; i < this.HPNode.node.childrenCount; i++)
         {
-            if(this.HPNode.children[i].active == true)
+            if(this.HPNode.node.children[i].active == true)
             {
-                this._HPStarArr.push(this.HPNode.children[i]);
+                this._HPStarArr.push(this.HPNode.node.children[i]);
             }
         }
         this._hp = this._HPStarArr.length;
@@ -117,6 +141,8 @@ export default class bossControl extends cc.Component {
         }));
         this._HPStarArr[index].runAction(act);
         this._hp--;
+        let dissAniNode = cc.instantiate(this.StarDiss);
+        dissAniNode.parent = this.node;
         // this.HPlabel.string = this._hp.toString();
     }
 
@@ -138,6 +164,7 @@ export default class bossControl extends cc.Component {
         this.node.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this.ClickBoss(event);
         });
+        lib.msgEvent.getinstance().emit(lib.msgConfig.HideClock);
         this._speed = 0;
         this.unschedule(this.Leave);
         this.node.getComponent(cc.BoxCollider).destroy();
@@ -147,6 +174,17 @@ export default class bossControl extends cc.Component {
             this.scheduleOnce(()=>{
                 this.node.destroy(); 
             },lib.defConfig.BossDieTime);
+        }
+        if(num > 0)
+        {
+            let shapInfo:_kits.ClickShape.ScoreInfo = {
+                score: 1000,
+                shape: 3,
+                isSpecial: true,
+            }
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement,false);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.x,this.node.y + 100));
         }
         this.dieEffect();
         this.schedule(()=>{
@@ -171,7 +209,7 @@ export default class bossControl extends cc.Component {
                 isSpecial: true,
             }
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
-            lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement,false);
             lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(fireWork.getPositionX(),fireWork.getPositionY()));
             fireWork.getComponent(cc.Animation).play("FwDiss");
         }));

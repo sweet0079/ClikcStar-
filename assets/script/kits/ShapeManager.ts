@@ -20,6 +20,9 @@ export default class ShapeManager {
         this.specialArr = [];
         this._frozen = false;
         this._doubleScore = false;
+        this._big = false;
+        this._small = false;
+        this._assimilation = false;
         ShapeManager.instance = this;
     }
 
@@ -27,6 +30,44 @@ export default class ShapeManager {
     private specialArr: Array<cc.Node>;
     private _frozen:boolean;
     private _doubleScore:boolean;
+    private _big:boolean;
+    private _small:boolean;
+    private _assimilation:boolean;
+    private _assimilationShape:number;
+    //返回同化形状
+    getassimilationShape(){
+        return this._assimilationShape;
+    }
+
+    //返回是否同化
+    getassimilation(){
+        return this._assimilation;
+    }
+
+    //设置是否同化
+    setassimilation(Flag:boolean){
+        this._assimilation = Flag;
+    }
+
+    //返回是否是缩小
+    getsmall(){
+        return this._small;
+    }
+
+    //设置是否是缩小
+    setsmall(Flag:boolean){
+        this._small = Flag;
+    }
+
+    //返回是否是放大
+    getbig(){
+        return this._big;
+    }
+
+    //设置是否是放大
+    setbig(Flag:boolean){
+        this._big = Flag;
+    }
 
     //返回是否是双倍分数
     getDoubleScore(){
@@ -93,15 +134,22 @@ export default class ShapeManager {
     clean(){
         this.shapeArr = [];
         this.specialArr = [];
+        this._frozen = false;
+        this._doubleScore = false;
+        this._big = false;
+        this._small = false;
+        this._assimilation = false;
     }
 
+    //同化所有形状
     assimilationNoreShape(){
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(5);
         for(let i = 0; i < this.shapeArr.length; i++)
         {
             this.shapeArr[i].getComponent(ShapeControl).setShape(temp);
         }
-
+        this._assimilation = true;
+        this._assimilationShape = temp;
     }
 
     //爆炸所有指定形状
