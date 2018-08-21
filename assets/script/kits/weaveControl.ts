@@ -156,7 +156,7 @@ export default class weaveControl extends cc.Component {
         let fpareFlag: boolean = true;//是否固定相同的飞行轨迹
         let dpareFlag: boolean = true;//是否固定相同的消散
         let cpareFlag: boolean = true;//是否固定相同的特性
-        let spareFlag: boolean = true;//是否固定相同的形状
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
         //获取随机参数数值
         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
         dpare.type = lib.defConfig.dissipate.none;
@@ -947,7 +947,7 @@ export default class weaveControl extends cc.Component {
         let fpareFlag: boolean = false;//是否固定相同的飞行轨迹
         let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
         let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
-        let spareFlag: boolean = true;//是否固定相同的形状
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
         //获取随机参数数值
         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();

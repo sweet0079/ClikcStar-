@@ -154,6 +154,7 @@ export default class ShapeManager {
 
     //爆炸所有指定形状
     desAppointShape(arr:Array<number>){
+        let index = 0;
         for(let j = 0; j < arr.length ; j++)
         {
             for(let i = 0; i < this.shapeArr.length; i++)
@@ -161,7 +162,8 @@ export default class ShapeManager {
                 let shapeCon = this.shapeArr[i].getComponent(ShapeControl);
                 if(shapeCon.gettype()[0] == arr[j])
                 {
-                    this.shapeArr[i].getComponent(ShapeControl).bombCallBack();
+                    index++;
+                    this.shapeArr[i].getComponent(ShapeControl).bombCallBack(parseInt((index / 8).toString()) * 0.1);
                     this.delShape(this.shapeArr[i]);
                     i--;
                 }

@@ -44,6 +44,8 @@ export default class ClickControl extends cc.Component {
     private SanxiaoFlag: boolean = false;
     //combo数字的节点
     private ComboLabelNode: cc.Node = null;
+    //good等字样的节点
+    private ZINode: cc.Node = null;
 
     //----- 生命周期 -----//
 
@@ -361,6 +363,10 @@ export default class ClickControl extends cc.Component {
 
     //创建good字样
     private createZiSprite(spf:cc.SpriteFrame){
+        if(this.ZINode)
+        {
+            this.ZINode.destroy();
+        }
         let node = new cc.Node('Good');
         let sp = node.addComponent(cc.Sprite);
         sp.spriteFrame = spf;
@@ -371,6 +377,7 @@ export default class ClickControl extends cc.Component {
         let seq = cc.sequence(act,cc.callFunc(()=>{
             node.destroy();
         }));
+        this.ZINode = node;
         node.runAction(seq);
     }
 
@@ -428,6 +435,7 @@ export default class ClickControl extends cc.Component {
 
     //重新开始
     private reStart(){
+        this.SanxiaoFlag = false;
         this.ComboNum = 1;
         this.SXComboNum = 1;
         this.ScoreArr = [];
@@ -439,6 +447,14 @@ export default class ClickControl extends cc.Component {
 
     private setSXFlag(){
         this.SanxiaoFlag = false;
+    }
+
+    private addHP(){
+        if(this.SanxiaoFlag)
+        {
+            return;
+        }
+        this.UIcon.addHP(this.ScoreArr.length * 10);
     }
 
     private add(ScoreInfo:_kits.ClickShape.ScoreInfo){
@@ -479,7 +495,7 @@ export default class ClickControl extends cc.Component {
             this.SXComboNum = 1;
             this.SXLastShape = [];
             //console.log("扣血");
-            this.UIcon.minHP();
+            this.UIcon.minHP(12);
             this.ShowScore = 0;
             return;
         }
@@ -517,15 +533,16 @@ export default class ClickControl extends cc.Component {
             this.ShowScore = score;
             lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
-        this.ShowCombo();
-        this.showGood();
-        if(this.SXComboNum >= 3)
-        {
-            this.CleanSameShape();
-        }
         if(flag)
         {
+            this.ShowCombo();
+            this.showGood();
+            if(this.SXComboNum >= 3)
+            {
+                this.CleanSameShape();
+            }
             this.UIcon.addPOWER(this.CalAddPower(this.ScoreArr));
+            this.addHP();
         }
         this.ScoreArr = [];
     }

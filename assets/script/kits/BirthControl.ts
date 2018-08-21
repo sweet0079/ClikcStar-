@@ -150,6 +150,7 @@ export default class BirthControl extends cc.Component {
 
     private Resurrection(){
         this.schedule(this.clockFun,0.5);
+        this.schedule(this.minHP,0.1);
         this.UIcon.initHP();
     }
     private bombCallBack(){
@@ -161,6 +162,7 @@ export default class BirthControl extends cc.Component {
     }
     private gameover(){
         this.unschedule(this.clockFun);
+        this.unschedule(this.minHP);
         this._weaveControl.unscheduleAllCallbacks();
         this.UIcon.gameover(0);
     }
@@ -190,6 +192,15 @@ export default class BirthControl extends cc.Component {
         this.schedule(this.clockFun,0.5);
     }
     //----- 私有方法 -----//
+    //随着时间扣血
+    private minHP(){
+        if(this.time < 2 || BossTimeInstance.getinstance().getisBossTime())
+        {
+            return;
+        }
+        let temp = parseInt((this.time / 15).toString());
+        this.UIcon.minHP(lib.defConfig.HPdifficulty[temp] / 10,false);
+    }
     //创建boss
     private createBoss()
     {
@@ -228,11 +239,11 @@ export default class BirthControl extends cc.Component {
             this.checkCreate();
             this.time += 0.5;
             this.interval += 0.5;
-            if(this.time % 1 == 0
-            && this.time >= 3)
-            {
-                this.minTime();
-            }
+            // if(this.time % 1 == 0
+            // && this.time >= 3)
+            // {
+            //     this.minTime();
+            // }
             // console.log(this.time);
         }
         else
@@ -245,6 +256,7 @@ export default class BirthControl extends cc.Component {
     //开始计时
     private startClock(){
         this.schedule(this.clockFun,0.5);
+        this.schedule(this.minHP,0.1);
     }
 
     private createSpeArr(){

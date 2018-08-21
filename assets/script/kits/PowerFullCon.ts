@@ -95,7 +95,7 @@ export default class PowerFullControl extends cc.Component {
         else
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.StartWeave,parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString()));
-            str = "套路来袭";
+            str = "一大波星星来袭";
             time = 2;
         }
         // this.assimilation();

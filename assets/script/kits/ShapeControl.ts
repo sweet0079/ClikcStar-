@@ -48,11 +48,7 @@ export default class ShapeControl extends cc.Component {
             {
                 this.node.scale = 2;
             }
-            else
-            {
-                this.node.scale = 1.5;
-            }
-            if(ShapeManager.getinstance().getsmall())
+            else if(ShapeManager.getinstance().getsmall())
             {
                 this.node.scale = 1;
             }
@@ -116,12 +112,17 @@ export default class ShapeControl extends cc.Component {
             let act;
             if(center)
             {
-                act = cc.scaleBy(0.1,1.5);
-                this.flyControl.ShowNode.getChildByName("star1").active = true;
+                let act1 = cc.scaleBy(0.1,2);
+                let act2 = cc.scaleBy(0.1,0.5);
+                this.flyControl.ShowNode.getChildByName("star").runAction(act1);
+                act = act2;
             }
             else
             {
-                act = cc.scaleBy(0.1,0.5);
+                let act1 = cc.scaleBy(0.1,1.5);
+                let act2 = cc.scaleBy(0.1,0.1);
+                this.flyControl.ShowNode.getChildByName("star").runAction(act2);
+                act = act1;
             }
             let seq = cc.sequence(act,cc.callFunc(()=>{
                 this.flyControl.ShowNode.scale = 0.6;
@@ -180,7 +181,6 @@ export default class ShapeControl extends cc.Component {
                 // });
                 // this.setClickJudgeFun(this._trianglegetIsClickShape);
                 calNode.children[0].setPositionY(-20);
-                calNode.children[1].setPositionY(-20);
             }
             // else if(this.type == lib.defConfig.shape.diamond)
             // {
@@ -193,12 +193,10 @@ export default class ShapeControl extends cc.Component {
                 // });
                 this.setClickJudgeFun(this._circulargetIsClickShape);
                 calNode.children[0].setPositionY(0);
-                calNode.children[1].setPositionY(0);
             }
             else
             {
                 calNode.children[0].setPositionY(0);
-                calNode.children[1].setPositionY(0);
             }
         }
     }
@@ -220,7 +218,7 @@ export default class ShapeControl extends cc.Component {
     
     //----- 事件回调 -----//
     //点击炸弹事件回调
-    bombCallBack(){
+    bombCallBack(delayTime = 0){
         if(this.type == 1 && this.isSpecial)
         {
             this._destroyAni();
@@ -236,11 +234,13 @@ export default class ShapeControl extends cc.Component {
             shape: this.gettype()[0],
             isSpecial: this.isSpecial,
         }
-        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
-        // ShapeManager.getinstance().delShape(this.node);
-        lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
-        lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.getPositionX(),this.node.getPositionY()));
-        this._destroyAni();
+        this.scheduleOnce(()=>{
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
+            // ShapeManager.getinstance().delShape(this.node);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.getPositionX(),this.node.getPositionY()));
+            this._destroyAni();
+        },delayTime);
     }
     //重新开始事件回调
     private reStart(){
@@ -274,14 +274,17 @@ export default class ShapeControl extends cc.Component {
         else
         {
             let act;
+            let act1 = cc.scaleBy(0.1,1.5);
+            let act2 = cc.scaleBy(0.1,0.5);
             if(center)
             {
-                act = cc.scaleBy(0.1,1.5);
-                this.flyControl.ShowNode.getChildByName("star1").active = true;
+                this.flyControl.ShowNode.getChildByName("star").runAction(act1);
+                act = act2;
             }
             else
             {
-                act = cc.scaleBy(0.1,0.5);
+                this.flyControl.ShowNode.getChildByName("star").runAction(act2);
+                act = act1;
             }
             let seq = cc.sequence(act,cc.callFunc(()=>{
                 this.flyControl.ShowNode.scale = 0.6;

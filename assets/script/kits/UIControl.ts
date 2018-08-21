@@ -89,8 +89,11 @@ export default class UIcontrol extends cc.Component {
     clickHelp(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         this.HelpLayer.active = true;
-        cc.director.pause();
+        cc.director.getActionManager().pauseAllRunningActions();
         cc.director.getActionManager().resumeTargets(this.HelpLayer.children);
+        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").children);
+        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").getChildByName("view").children);
+        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").getChildByName("view").getChildByName("content").children);
     }
 
     closeHelp(){
@@ -119,8 +122,7 @@ export default class UIcontrol extends cc.Component {
                     score:this.score,
                 })
             }
-            this.OverLayer.getChildByName("Share").getChildByName("label2").active = false;
-            this.OverLayer.getChildByName("Share").getChildByName("label1").active = false;
+            this.OverLayer.getChildByName("Share").active = false;
             if(this.score >= 0)
             {
                 this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = this.score.toString();
@@ -320,10 +322,14 @@ export default class UIcontrol extends cc.Component {
         }
     }
 
-    addHP(){
+    addHP(num = 17){
         if(this.nowHP < lib.defConfig.MAXHP)
         {
-            this.nowHP++;
+            this.nowHP += 17;
+            if(this.nowHP >= lib.defConfig.MAXHP)
+            {
+                this.nowHP = lib.defConfig.MAXHP;
+            }
             this.HPBar.addHp(this.nowHP);
             this.RedKuang.stopActionByTag(1000);
             this.RedKuang.opacity = 0;
@@ -339,35 +345,42 @@ export default class UIcontrol extends cc.Component {
     }
 
     initHP(){
+        this.RedKuang.stopActionByTag(1000);
+        this.RedKuang.opacity = 0;
+        this.RedKuang.active = false;
         this.nowHP = lib.defConfig.MAXHP;
         this.HPBar.initHPBar();
         // this.HP.progress = 1;
         // this.RedLayer.width = 0;
     }
 
-    minHP(){
+    minHP(num = 17,showRed = true){
         if(this.nowHP == 0)
         {
             return;
         }
-        lib.msgEvent.getinstance().emit(lib.msgConfig.micMinHP);
-        this.nowHP--;
+        this.nowHP -= num;
         this.HPBar.minHp(this.nowHP);
         // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
         // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
         // this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
-        this.RedKuang.active = true;
-        let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35));
-        if(this.nowHP == 1)
+        if(showRed)
         {
-            act = cc.fadeIn(0.35);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.micMinHP);
+            if(this.nowHP > 17)
+            {
+                let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35));
+                this.RedKuang.active = true;
+                this.RedKuang.runAction(act);
+            }
+        }
+        if(this.nowHP <= 17)
+        {
+            this.RedKuang.active = true;
+            let act = cc.fadeIn(0.35);
             act.setTag(1000);
             this.RedKuang.runAction(act);
         } 
-        else
-        {
-            this.RedKuang.runAction(act);
-        }
         if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);

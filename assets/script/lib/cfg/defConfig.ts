@@ -213,7 +213,7 @@ export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高
 export const DesignPlayHeight = 1620;
 //HP上限
-export const MAXHP = 6;
+export const MAXHP = 100;
 //power上限
 export const MAXPOWER = 500;
 //power梯度
@@ -256,3 +256,5 @@ export const HealthNum = [4,4,3,3,2];
 export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50];
 /** boss血量数组 */
 export const bossdifficulty = [18,20,24,25,30,32,36,40];
+/** 每15秒改变每秒血量下降梯度数组 */
+export const HPdifficulty = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
