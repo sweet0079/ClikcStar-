@@ -37,6 +37,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Prefab) RedRound: cc.Prefab = null;
     //掉血时的红屏框
     @property(cc.Node) RedKuang: cc.Node = null;
+    //全屏红的节点
+    @property(cc.Node) RedCanvas: cc.Node = null;
     //新手引导节点
     @property(cc.Node) NoviceGuidance: cc.Node = null;
     //能量满了之后触发各种特效的控制器
@@ -87,13 +89,8 @@ export default class UIcontrol extends cc.Component {
     }
     //----- 按钮回调 -----//
     clickHelp(){
-        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        // lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         this.HelpLayer.active = true;
-        cc.director.getActionManager().pauseAllRunningActions();
-        cc.director.getActionManager().resumeTargets(this.HelpLayer.children);
-        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").children);
-        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").getChildByName("view").children);
-        cc.director.getActionManager().resumeTargets(this.HelpLayer.getChildByName("pageview").getChildByName("view").getChildByName("content").children);
     }
 
     closeHelp(){
@@ -137,16 +134,19 @@ export default class UIcontrol extends cc.Component {
 
     //新手引导点击
     NoviceGuidanceClick(){
-        if(this.NoviceGuidance.getChildByName("mask1").active == true)
-        {
-            this.showNoviceGuidanceMask2();
-        }
-        else if(this.NoviceGuidance.getChildByName("mask2").active == true)
-        {
-            ShapeManager.getinstance().continueAllShape();
-            this.NoviceGuidance.active = false;
-            lib.msgEvent.getinstance().emit(lib.msgConfig.startClock);
-        }
+        // if(this.NoviceGuidance.getChildByName("mask1").active == true)
+        // {
+        //     this.showNoviceGuidanceMask2();
+        // }
+        // else if(this.NoviceGuidance.getChildByName("mask2").active == true)
+        // {
+        //     ShapeManager.getinstance().continueAllShape();
+        //     this.NoviceGuidance.active = false;
+        //     lib.msgEvent.getinstance().emit(lib.msgConfig.startClock);
+        // }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
+        this.HelpLayer.active = false;
+        lib.msgEvent.getinstance().emit(lib.msgConfig.startClock);
     }
     //主页
     homePage(){
@@ -334,6 +334,7 @@ export default class UIcontrol extends cc.Component {
             this.RedKuang.stopActionByTag(1000);
             this.RedKuang.opacity = 0;
             this.RedKuang.active = false;
+            this.RedCanvas.active = false;
             // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
             // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
             // // this.RedLayer.width -= (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
@@ -348,6 +349,7 @@ export default class UIcontrol extends cc.Component {
         this.RedKuang.stopActionByTag(1000);
         this.RedKuang.opacity = 0;
         this.RedKuang.active = false;
+        this.RedCanvas.active = false;
         this.nowHP = lib.defConfig.MAXHP;
         this.HPBar.initHPBar();
         // this.HP.progress = 1;
@@ -369,14 +371,19 @@ export default class UIcontrol extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.micMinHP);
             if(this.nowHP > 17)
             {
-                let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35));
+                let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35),cc.callFunc(()=>{
+                    this.RedCanvas.active = false;
+                    this.RedKuang.active = false;
+                }));
                 this.RedKuang.active = true;
+                this.RedCanvas.active = true;
                 this.RedKuang.runAction(act);
             }
         }
         if(this.nowHP <= 17)
         {
             this.RedKuang.active = true;
+            this.RedCanvas.active = true;
             let act = cc.fadeIn(0.35);
             act.setTag(1000);
             this.RedKuang.runAction(act);

@@ -102,6 +102,7 @@ export default class bossControl extends cc.Component {
         }
     }
 
+    
     /** boss没有被点死 */
     private Leave(){
         // this._speed = 0;

@@ -373,7 +373,7 @@ export default class ClickControl extends cc.Component {
         node.scale = 0;
         node.setPosition(0,-100);
         node.parent = this.Ziparent;
-        let act = cc.scaleTo(0.5,1.5);
+        let act = cc.scaleTo(1,1.5);
         let seq = cc.sequence(act,cc.callFunc(()=>{
             node.destroy();
         }));
@@ -405,6 +405,7 @@ export default class ClickControl extends cc.Component {
             ani.once('finished',()=>{
                 sco.destroy();
             },this);
+            ani.defaultClip.speed = 0.5;
             ani.play();
         }
     }

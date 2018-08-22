@@ -225,12 +225,13 @@ export default class BirthControl extends cc.Component {
 
     //新手引导
     private NoviceGuidance(){
-        this._weaveControl.createNoviceGuidance();
-        this.UIcon.showNoviceGuidance();
-        this.scheduleOnce(()=>{
-            ShapeManager.getinstance().pauseAllShape();
-            this.UIcon.showNoviceGuidanceMask1();
-        },1);
+        // this._weaveControl.createNoviceGuidance();
+        // this.UIcon.showNoviceGuidance();
+        // this.scheduleOnce(()=>{
+        //     ShapeManager.getinstance().pauseAllShape();
+        //     this.UIcon.showNoviceGuidanceMask1();
+        // },2);
+        this.UIcon.clickHelp();
     }
     //根据时间增长，创建形状、提高难度
     private clockFun(){
@@ -286,7 +287,7 @@ export default class BirthControl extends cc.Component {
             this._SpeHArr = [];
             if(this.time > 80)
             {
-                for(let i = 0; i < 2 ; i++)
+                for(let i = 0; i < lib.defConfig.HealthNum[lib.defConfig.HealthNum.length - 1] ; i++)
                 {
                     this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
                 }

@@ -49,10 +49,17 @@ export default class weaveControl extends cc.Component {
         cpare.type = lib.defConfig.character.none;
         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
         let fpare1 = this._birthControl.birthPoints[18].getRandomFlyParameters();
-        fpare1.Speed = 200;
+        fpare1.Speed = 300;
         fpare1.Angle = 0;
-        this._birthControl.birthPoints[18].createAppointShape(fpare1,dpare,cpare,spare);
-        this._birthControl.birthPoints[16].createSpecialShape(1,fpare1,dpare,cpare);
+        this._birthControl.birthPoints[1].createAppointShape(fpare1,dpare,cpare,spare);
+        this._birthControl.birthPoints[2].createAppointShape(fpare1,dpare,cpare,spare);
+        this._birthControl.birthPoints[3].createAppointShape(fpare1,dpare,cpare,spare);
+        this.scheduleOnce(()=>{
+            this._birthControl.birthPoints[1].createAppointShape(fpare1,dpare,cpare,spare);
+            this._birthControl.birthPoints[2].createAppointShape(fpare1,dpare,cpare,spare);
+            this._birthControl.birthPoints[3].createAppointShape(fpare1,dpare,cpare,spare);
+            this._birthControl.birthPoints[16].createSpecialShape(1,fpare1,dpare,cpare);
+        },1);
     }
     //创建闪烁的特殊形状
     createBlinkSpecial(num){

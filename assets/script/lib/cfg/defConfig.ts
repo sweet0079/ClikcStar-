@@ -251,7 +251,7 @@ export const negitiveBuff = cc.Enum({
 /** 特殊图形生成时间节点 */
 export const SpecialBirthTime = [5,7,14,21,28,35,42,48,54,60,65];
 /** 血包个数 */
-export const HealthNum = [4,4,3,3,2];
+export const HealthNum = [2,2,2,1,1];
 /** 双倍炸弹概率 */
 export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50];
 /** boss血量数组 */

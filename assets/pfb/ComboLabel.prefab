@@ -102,8 +102,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27,
-      "height": 54
+      "width": 33,
+      "height": 56
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -130,9 +130,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 54,
-    "_fontSize": 54,
-    "_lineHeight": 54,
+    "_actualFontSize": 56,
+    "_fontSize": 56,
+    "_lineHeight": 56,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -140,7 +140,7 @@
     "_N$string": "1",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "黑体",
+    "_N$fontFamily": "微软雅黑",
     "_N$overflow": 0
   },
   {
@@ -189,7 +189,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 315,
       "height": 155
     },
     "_rotationX": 0,
@@ -198,7 +198,7 @@
     "_scaleY": 0.6,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 30,
+      "x": 69,
       "y": 0
     },
     "_skewX": 0,

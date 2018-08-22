@@ -112,7 +112,7 @@ export default class ShapeControl extends cc.Component {
             let act;
             if(center)
             {
-                let act1 = cc.scaleBy(0.1,2);
+                let act1 = cc.scaleBy(0.1,4);
                 let act2 = cc.scaleBy(0.1,0.5);
                 this.flyControl.ShowNode.getChildByName("star").runAction(act1);
                 act = act2;
@@ -274,15 +274,17 @@ export default class ShapeControl extends cc.Component {
         else
         {
             let act;
-            let act1 = cc.scaleBy(0.1,1.5);
-            let act2 = cc.scaleBy(0.1,0.5);
             if(center)
             {
+                let act1 = cc.scaleBy(0.1,4);
+                let act2 = cc.scaleBy(0.1,0.5);
                 this.flyControl.ShowNode.getChildByName("star").runAction(act1);
                 act = act2;
             }
             else
             {
+                let act1 = cc.scaleBy(0.1,1.5);
+                let act2 = cc.scaleBy(0.1,0.1);
                 this.flyControl.ShowNode.getChildByName("star").runAction(act2);
                 act = act1;
             }
