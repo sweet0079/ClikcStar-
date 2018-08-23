@@ -87,6 +87,22 @@ export default class bossControl extends cc.Component {
         this.schedule(this.clockFun,0.5);
     }
     //----- 私有方法 -----//
+    /** 点击boss效果 */
+    private ClickEffect(){
+        let act1 = cc.scaleTo(0.05,1.75);
+        let act2 = cc.scaleTo(0.05,2);
+        let seq = cc.sequence(act1,act2);
+        this.node.runAction(seq);
+        // let act1 = cc.scaleTo(0.05,0.75);
+        // let act2 = cc.scaleTo(0.05,1);
+        // let seq = cc.sequence(act1,act2);
+        // this.node.getChildByName("boss").runAction(seq);
+        // act1 = cc.scaleTo(0.05,1);
+        // act2 = cc.scaleTo(0.05,1.2);
+        // seq = cc.sequence(act1,act2);
+        // this.node.getChildByName("star").runAction(seq);
+    }
+
     /** 点击boss方法 */
     private ClickBoss(event:cc.Event.EventTouch){
         if(this._hp == 0)
@@ -95,6 +111,7 @@ export default class bossControl extends cc.Component {
         }
         lib.msgEvent.getinstance().emit(lib.msgConfig.micClickStart);
         this.minHP();
+        this.ClickEffect();
         lib.msgEvent.getinstance().emit(lib.msgConfig.clickBoss);
         if(this._hp <= 0)
         {
@@ -162,6 +179,7 @@ export default class bossControl extends cc.Component {
 
     /** boss死亡 */
     private die(num:number = 100){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.stopLockHPAni);
         this.node.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this.ClickBoss(event);
         });

@@ -18,6 +18,7 @@ export default {
     ShowClock: 'ShowClock',
     HideClock: 'HideClock',
     negitiveBomb: 'negitiveBomb',
+    stopLockHPAni: 'stopLockHPAni',
 
     //音效
     micStartBtn: 'msgStartBtn',

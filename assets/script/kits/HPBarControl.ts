@@ -23,11 +23,22 @@ export default class HPBarControl extends cc.Component {
         //         }
         //     },this);;
         // }
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.stopLockHPAni,"stopHPBarLockAni",this);
         this.initHPBar();
+    }
+    onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.stopLockHPAni,"stopHPBarLockAni",this);
     }
     //----- 按钮回调 -----//
     //----- 事件回调 -----//
     //----- 公有方法 -----//
+    showHPBarLockAni(){
+        if(this.HPPro.progress >= 0.17)
+        {
+            this.HPPro.barSprite.node.getComponent(cc.Animation).play("lockHP");
+        }
+    }
+
     initHPBar(){
         // for(let i = 0 ; i < this.node.childrenCount; i++)
         // {
@@ -63,6 +74,10 @@ export default class HPBarControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    private stopHPBarLockAni(){
+        this.HPPro.barSprite.node.getComponent(cc.Animation).stop("lockHP");
+        this.HPPro.barSprite.node.color = cc.hexToColor("#00EDB2");
+    }
     private blink(){
         // let act = cc.blink(2,3);
         // this.node.runAction(act);

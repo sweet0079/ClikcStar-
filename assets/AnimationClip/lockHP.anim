@@ -1,0 +1,37 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "lockHP",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.6666666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "22",
+  "curveData": {
+    "props": {
+      "color": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Color",
+            "r": 0,
+            "g": 237,
+            "b": 178,
+            "a": 255
+          }
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": {
+            "__type__": "cc.Color",
+            "r": 237,
+            "g": 164,
+            "b": 8,
+            "a": 255
+          }
+        }
+      ]
+    }
+  },
+  "events": []
+}

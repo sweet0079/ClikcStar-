@@ -53,6 +53,7 @@ export default class BirthControl extends cc.Component {
     start () {
         this.bossFlag = false;
         BossTimeInstance.getinstance().setisBossTime(false);
+        ShapeManager.getinstance().clean();
         this._weaveControl = this.node.getComponent(weaveControl);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
@@ -149,9 +150,9 @@ export default class BirthControl extends cc.Component {
     }
 
     private Resurrection(){
+        this.UIcon.initHP();
         this.schedule(this.clockFun,0.5);
         this.schedule(this.minHP,0.1);
-        this.UIcon.initHP();
     }
     private bombCallBack(){
         this.unschedule(this.clockFun);
@@ -198,7 +199,11 @@ export default class BirthControl extends cc.Component {
         {
             return;
         }
-        let temp = parseInt((this.time / 15).toString());
+        let temp = parseInt((this.time / 5).toString());
+        if(temp >= lib.defConfig.HPdifficulty.length)
+        {
+            temp = lib.defConfig.HPdifficulty.length - 1;
+        }
         this.UIcon.minHP(lib.defConfig.HPdifficulty[temp] / 10,false);
     }
     //创建boss
@@ -211,6 +216,7 @@ export default class BirthControl extends cc.Component {
         this.setweaveRunTime(this.getweaveRunTime() + 0.5);
         if(this.getweaveRunTime() == lib.defConfig.WarningTime)
         {
+            this.UIcon.showHPBarLockAni();
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
             lib.msgEvent.getinstance().emit(lib.msgConfig.ShowClock,lib.defConfig.BossComingTime + lib.defConfig.BossLivingTime);
             let boss = cc.instantiate(this.bossprefeb);
@@ -282,25 +288,25 @@ export default class BirthControl extends cc.Component {
                 }
             }
         }
-        if(this.time % 20 == 0)
-        {   
-            this._SpeHArr = [];
-            if(this.time > 80)
-            {
-                for(let i = 0; i < lib.defConfig.HealthNum[lib.defConfig.HealthNum.length - 1] ; i++)
-                {
-                    this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
-                }
-            }
-            else
-            {
-                for(let i = 0; i < lib.defConfig.HealthNum[this.time / 20] ; i++)
-                {
-                    this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
-                }
-            }
-            // console.log(this._SpeHArr);
-        }
+        // if(this.time % 20 == 0)
+        // {   
+        //     this._SpeHArr = [];
+        //     if(this.time > 80)
+        //     {
+        //         for(let i = 0; i < lib.defConfig.HealthNum[lib.defConfig.HealthNum.length - 1] ; i++)
+        //         {
+        //             this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
+        //         }
+        //     }
+        //     else
+        //     {
+        //         for(let i = 0; i < lib.defConfig.HealthNum[this.time / 20] ; i++)
+        //         {
+        //             this._SpeHArr.push(this.time + lib.RandomParameters.RandomParameters.getRandomInt(20));
+        //         }
+        //     }
+        //     // console.log(this._SpeHArr);
+        // }
     }
 
     //检验是否可以创建特殊形状

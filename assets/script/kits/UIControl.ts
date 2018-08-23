@@ -150,6 +150,7 @@ export default class UIcontrol extends cc.Component {
     }
     //主页
     homePage(){
+        cc.director.resume();
         lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         cc.director.loadScene("startScene");
     }
@@ -243,6 +244,7 @@ export default class UIcontrol extends cc.Component {
             this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = "/" + Math.abs(this.score).toString();
         }
         this.OverLayer.active = true;
+        cc.director.pause();
     }
 
     showarn(){
@@ -343,6 +345,10 @@ export default class UIcontrol extends cc.Component {
             //     this.RedLayer.width = 0;
             // }
         }
+    }
+
+    showHPBarLockAni(){
+        this.HPBar.showHPBarLockAni();
     }
 
     initHP(){
