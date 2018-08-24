@@ -226,8 +226,8 @@ export const coefficient = 2 * Math.PI / 360;
 export const positiveBuff = cc.Enum({
     // 全清
     allClean: -1,
-    // 回满血
-    health: -1,
+    // // 回满血
+    // health: -1,
     // 减速
     frozen: -1,
     // 双倍

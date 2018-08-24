@@ -9326,7 +9326,7 @@
       "__id__": 5
     },
     "component": "UIControl",
-    "handler": "closeHelp",
+    "handler": "NoviceGuidanceClick",
     "customEventData": ""
   },
   {

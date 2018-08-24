@@ -166,6 +166,7 @@ export default class bossControl extends cc.Component {
 
     /** boss死亡特效 */
     private dieEffect(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micBossDie);
         this.node.getChildByName("boss1").active = true;
         this.node.getChildByName("boss1").rotation = this.node.getChildByName("boss").rotation;
         this.node.getChildByName("boss2").active = true;
@@ -187,7 +188,6 @@ export default class bossControl extends cc.Component {
         this._speed = 0;
         this.unschedule(this.Leave);
         this.node.getComponent(cc.BoxCollider).destroy();
-        BossTimeInstance.getinstance().setisBossTime(false);
         if(this._score == 0)
         {
             this.scheduleOnce(()=>{
@@ -206,6 +206,9 @@ export default class bossControl extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.x,this.node.y + 100));
         }
         this.dieEffect();
+        this.scheduleOnce(()=>{
+            BossTimeInstance.getinstance().setisBossTime(false);
+        },0.5);
         this.schedule(()=>{
             this.createFireWork(num);
         },0.05,this._score,lib.defConfig.BossDieTime);

@@ -30,4 +30,6 @@ export default {
     micclickCombo: 'clickCombo',
     micPlayBGM: 'playBGM',
     micPlayBossBGM: 'playBossBGM',
+    micSanXiao: 'playSanXiao',
+    micBossDie: 'playBossDie',
 }

@@ -80,6 +80,7 @@ export default class ClickControl extends cc.Component {
      * @private
      */
     private CleanSameShape(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micSanXiao);
         this.SanxiaoFlag = true;
         this.SXLastAddCombo = 0;
         this.SXComboNum = 1;

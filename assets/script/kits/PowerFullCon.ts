@@ -67,11 +67,11 @@ export default class PowerFullControl extends cc.Component {
                     str = "双倍分数";
                     time = 5;
                     break;
-                case lib.defConfig.positiveBuff.health:
-                    this.Health();
-                    str = "回满电量";
-                    time = 1;
-                    break;
+                // case lib.defConfig.positiveBuff.health:
+                //     this.Health();
+                //     str = "回满电量";
+                //     time = 1;
+                //     break;
                 case lib.defConfig.positiveBuff.frozen:
                     this.frozen();
                     str = "减速";

@@ -21,6 +21,8 @@ export default class NewClass extends lib.ccAudioPlayer  {
     private clickmedkit = 'res/raw-assets/mic/Stars_medkit.mp3';
     private clickbomb = 'res/raw-assets/mic/Stars_bomb.mp3';
     private warning = 'res/raw-assets/mic/Stars_warning.mp3';
+    private sanxiao = 'res/raw-assets/mic/Stars_sanxiao.mp3';
+    private bossDie = 'res/raw-assets/mic/Stars_BossDie.mp3';
     //----- 公共方法 -----//
     //----- 事件回调 -----//
     msgStartBtn(){
@@ -50,6 +52,12 @@ export default class NewClass extends lib.ccAudioPlayer  {
     msgclickCombo(){
         this.play(6, this.clickCombo, false);
     }
+    msgPlaySanXiao(){
+        this.play(7, this.sanxiao, false);
+    }
+    msgPlayBossDie(){
+        this.play(8, this.bossDie, false);
+    }
     msgPlayBGM(){
         this.play(0, this.bg, true);
     }
@@ -76,6 +84,8 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.addEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);   
         msgEvent.addEvent(lib.msgConfig.micPlayBGM, 'msgPlayBGM', this);   
         msgEvent.addEvent(lib.msgConfig.micPlayBossBGM, 'msgPlayBossBGM', this);   
+        msgEvent.addEvent(lib.msgConfig.micSanXiao, 'msgPlaySanXiao', this);   
+        msgEvent.addEvent(lib.msgConfig.micBossDie, 'msgPlayBossDie', this); 
     }
     start() {
         super.start();
@@ -93,7 +103,9 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.removeEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);    
         msgEvent.removeEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);     
         msgEvent.removeEvent(lib.msgConfig.micPlayBGM, 'msgPlayBGM', this);   
-        msgEvent.removeEvent(lib.msgConfig.micPlayBossBGM, 'msgPlayBossBGM', this);     
+        msgEvent.removeEvent(lib.msgConfig.micPlayBossBGM, 'msgPlayBossBGM', this);  
+        msgEvent.removeEvent(lib.msgConfig.micSanXiao, 'msgPlaySanXiao', this);    
+        msgEvent.removeEvent(lib.msgConfig.micBossDie, 'msgPlayBossDie', this);   
         super.onDestroy();
     }
 }
