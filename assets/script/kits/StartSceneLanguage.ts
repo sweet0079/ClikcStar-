@@ -1,4 +1,4 @@
-/** 主界面语言控制 */
+/** 开始界面语言控制 */
 
 import HelpLanguage from './Helplanguage'
 import * as lib from '../lib/lib'

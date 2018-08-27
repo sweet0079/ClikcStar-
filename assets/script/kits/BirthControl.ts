@@ -267,11 +267,11 @@ export default class BirthControl extends cc.Component {
     }
 
     private createSpeArr(){
-        if(this.time > lib.defConfig.SpecialBirthTime[lib.defConfig.SpecialBirthTime.length - 2])
+        if(this.time > lib.defConfig.SpecialBirthTime[lib.defConfig.SpecialBirthTime.length - 1])
         {
-            if(this.time % 5 == 0)
+            if(this.time % lib.defConfig.SpecialBirthinterval == 0)
             {
-                this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(5);
+                this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.SpecialBirthinterval);
                 this._SpeBDouPercent = 50;
                 // console.log(this._SpeB);
             }

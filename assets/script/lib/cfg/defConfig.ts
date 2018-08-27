@@ -249,12 +249,14 @@ export const negitiveBuff = cc.Enum({
     length: -1,
 });
 /** 特殊图形生成时间节点 */
-export const SpecialBirthTime = [5,7,14,21,28,35,42,48,54,60,65];
+export const SpecialBirthTime = [5,7,14,21,28,35,42,49,56,60,63];
+/** 特殊图形生成时间节点 */
+export const SpecialBirthinterval = 4;
 /** 血包个数 */
 export const HealthNum = [2,2,2,1,1];
 /** 双倍炸弹概率 */
-export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50];
+export const DoubleBomb = [10,10,20,20,30,30,40,40,50,50,50,50,60];
 /** boss血量数组 */
 export const bossdifficulty = [18,20,24,25,30,32,36,40];
 /** 每5秒改变每秒血量下降梯度数组 */
-export const HPdifficulty = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+export const HPdifficulty = [5,5,6,7,7,8,8,9,9,10,10,11,11,12,12,13,14,15];

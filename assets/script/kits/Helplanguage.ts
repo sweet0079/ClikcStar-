@@ -22,10 +22,10 @@ export default class Helplanguage extends cc.Component {
     }
 
     setEnglish(){
-        this.shapeIntroduction.string = "tap to the star for a score of 100 \ntap to the border for a score of 50";
-        this.HPIntroduction.string = "HP continues to decrease,tapping on the star can restore some HP,if you don't hit the star, you will lose some HP";
-        this.MPIntroduction.string = "There are energy slots on both sides of the screen,eliminate stars can recharge the energy slots,a random effect is triggered when the energy slots are full!";
-        this.ThreeIntroduction.string = "【Clear three stars with the same border in a row, and all stars with the same border on the screen will be cleared】";
+        this.shapeIntroduction.string = "tap to the star = +100pt. \ntap to the border = +50pt.";
+        this.HPIntroduction.string = "HP continues to decrease. Tapping on the star = +HP. Missing the star = -HP.";
+        this.MPIntroduction.string = "\nThe energy slots on both sides of the screen, eliminate stars can recharge it. A random effect is triggered when they are full!";
+        this.ThreeIntroduction.string = "\n【Clear three stars with the same border in a row, and all stars with the same border on the screen will be cleared】";
         this.bombIntroduction.string = "If a bomb is touched, the game is over";
         this.bossIntroduction.string = "The BOSS will devour all the stars on the screen,wiping out the BOSS can get a lot of score";
     }

@@ -219,11 +219,11 @@ export default class UIcontrol extends cc.Component {
         this.hidewarn();
         if(labelType == 1)
         {
-            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = "触发炸弹,小心!";
+            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = lib.lanConfig.BombOverStr;
         }
         else
         {
-            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = "电量耗尽,注意!";
+            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = lib.lanConfig.HPEmptyStr;
         }
         if(this.firstDie)
         {

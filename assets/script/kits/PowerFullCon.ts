@@ -38,12 +38,12 @@ export default class PowerFullControl extends cc.Component {
             {
                 case lib.defConfig.negitiveBuff.createBomb:
                     this.createBomb();
-                    str = "制造炸弹";
+                    str = lib.lanConfig.BombStr;//Make bombs
                     time = 1;
                     break;
                 case lib.defConfig.negitiveBuff.small:
                     this.SmallShape();
-                    str = "缩小形状";
+                    str = lib.lanConfig.NarrowingStr;//Shape narrowing
                     time = 5;
                     break;
                 default:
@@ -59,12 +59,12 @@ export default class PowerFullControl extends cc.Component {
             {
                 case lib.defConfig.positiveBuff.allClean:
                     this.CleanAll();
-                    str = "清屏一次";
+                    str = lib.lanConfig.ClearStr;//Clear the screen
                     time = 1;
                     break;
                 case lib.defConfig.positiveBuff.doubleScore:
                     this.DoubleScore();
-                    str = "双倍分数";
+                    str = lib.lanConfig.DoubleStr;//Double score
                     time = 5;
                     break;
                 // case lib.defConfig.positiveBuff.health:
@@ -74,17 +74,17 @@ export default class PowerFullControl extends cc.Component {
                 //     break;
                 case lib.defConfig.positiveBuff.frozen:
                     this.frozen();
-                    str = "减速";
+                    str = lib.lanConfig.FrozenStr;//Slow Down
                     time = 5;
                     break;
                 case lib.defConfig.positiveBuff.assimilation:
                     this.assimilation();
-                    str = "同化形状";
+                    str = lib.lanConfig.assimilationStr;//Same border
                     time = 2;
                     break;
                 case lib.defConfig.positiveBuff.big:
                     this.BigShape();
-                    str = "放大形状";
+                    str = lib.lanConfig.expandingStr;//Shape expanding
                     time = 5;
                     break;
                 default:
@@ -95,7 +95,7 @@ export default class PowerFullControl extends cc.Component {
         else
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.StartWeave,parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString()));
-            str = "一大波星星来袭";
+            str = lib.lanConfig.weaveStr;//Lots of stars are coming
             time = 2;
         }
         // this.assimilation();
