@@ -48,6 +48,8 @@ export default class UIcontrol extends cc.Component {
 
     
     //----- 属性声明 -----//
+    //血量锁定
+    lockHP: boolean = false;
     //记录当前分数
     score: number = 0;
     //记录当前血量
@@ -185,6 +187,10 @@ export default class UIcontrol extends cc.Component {
         cc.director.resume();
     }
     //----- 事件回调 -----//
+    emptyHP(){
+        this.HPBar.minHp(0);
+        this.lockHP = true;
+    }
     //展示新手引导UI
     showNoviceGuidance(){
         this.NoviceGuidance.active = true;
@@ -325,6 +331,10 @@ export default class UIcontrol extends cc.Component {
     }
 
     addHP(num = 17){
+        if(this.lockHP)
+        {
+            return;
+        }
         if(this.nowHP < lib.defConfig.MAXHP)
         {
             this.nowHP += 17;
@@ -357,12 +367,17 @@ export default class UIcontrol extends cc.Component {
         this.RedKuang.active = false;
         this.RedCanvas.active = false;
         this.nowHP = lib.defConfig.MAXHP;
+        this.lockHP = false;
         this.HPBar.initHPBar();
         // this.HP.progress = 1;
         // this.RedLayer.width = 0;
     }
 
     minHP(num = 17,showRed = true){
+        if(this.lockHP)
+        {
+            return;
+        }
         if(this.nowHP == 0)
         {
             return;

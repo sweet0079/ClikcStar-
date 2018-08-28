@@ -157,6 +157,7 @@ export default class BirthControl extends cc.Component {
     private bombCallBack(){
         this.unschedule(this.clockFun);
         this._weaveControl.unscheduleAllCallbacks();
+        this.UIcon.emptyHP();
         this.scheduleOnce(()=>{
             this.UIcon.gameover(1);
         },1);
@@ -272,7 +273,7 @@ export default class BirthControl extends cc.Component {
             if(this.time % lib.defConfig.SpecialBirthinterval == 0)
             {
                 this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.SpecialBirthinterval);
-                this._SpeBDouPercent = 50;
+                this._SpeBDouPercent = lib.defConfig.DoubleBomb[lib.defConfig.DoubleBomb.length - 1];
                 // console.log(this._SpeB);
             }
         }
@@ -283,7 +284,14 @@ export default class BirthControl extends cc.Component {
                 if(this.time == lib.defConfig.SpecialBirthTime[i])
                 {
                     this._SpeB = this.time + lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.SpecialBirthTime[i + 1] - lib.defConfig.SpecialBirthTime[i]);
-                    this._SpeBDouPercent = lib.defConfig.DoubleBomb[i];
+                    if(i < lib.defConfig.DoubleBomb.length)
+                    {
+                        this._SpeBDouPercent = lib.defConfig.DoubleBomb[i];
+                    }
+                    else
+                    {
+                        this._SpeBDouPercent = lib.defConfig.DoubleBomb[lib.defConfig.DoubleBomb.length - 1];
+                    }
                     // console.log(this._SpeB);
                 }
             }

@@ -163,7 +163,7 @@ export default class ShapeManager {
                 if(shapeCon.gettype()[0] == arr[j])
                 {
                     index++;
-                    this.shapeArr[i].getComponent(ShapeControl).bombCallBack(parseInt((index / 5).toString()) * 0.1);
+                    this.shapeArr[i].getComponent(ShapeControl).bombCallBack(parseInt((index / 3).toString()) * 0.1);
                     this.delShape(this.shapeArr[i]);
                     i--;
                 }

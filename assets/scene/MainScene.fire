@@ -18,6 +18,12 @@
       },
       {
         "__id__": 6
+      },
+      {
+        "__id__": 426
+      },
+      {
+        "__id__": 423
       }
     ],
     "_tag": -1,
@@ -65,10 +71,10 @@
         "__id__": 3
       },
       {
-        "__id__": 422
+        "__id__": 424
       },
       {
-        "__id__": 423
+        "__id__": 425
       }
     ],
     "_prefab": null,
@@ -119,23 +125,6 @@
     "UIcon": {
       "__id__": 4
     },
-    "ZiSpf": [
-      {
-        "__uuid__": "6af4ac87-c83f-44fc-8668-4c25fe7d74c2"
-      },
-      {
-        "__uuid__": "6f566d2a-d306-411c-a581-a061925578ea"
-      },
-      {
-        "__uuid__": "12e2c1b7-9f31-4b64-96d6-6737ae47c2d9"
-      },
-      {
-        "__uuid__": "f44236e1-0487-43a3-9850-105e531994f5"
-      },
-      {
-        "__uuid__": "9ddb5a1d-9cce-4da2-805e-ce3579883e3e"
-      }
-    ],
     "Ziparent": {
       "__id__": 40
     },
@@ -147,6 +136,9 @@
     },
     "birthLayout": {
       "__id__": 101
+    },
+    "testlabel": {
+      "__id__": 422
     }
   },
   {
@@ -15402,6 +15394,80 @@
     }
   },
   {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 423
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 40,
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$string": "Label",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "label",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 422
+      }
+    ],
+    "_prefab": null,
+    "_id": "80Jia44RRL24sX7AsFIsul",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 98,
+      "height": 40
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 860,
+      "y": 1792
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
     "__type__": "78843BKeRlPO6BMaH2RcfKf",
     "_name": "",
     "_objFlags": 0,
@@ -15433,5 +15499,91 @@
     "SkipStr": {
       "__id__": 164
     }
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "label",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 427
+      },
+      {
+        "__id__": 428
+      }
+    ],
+    "_prefab": null,
+    "_id": "37cW/FGFREyJ53D2SBnVIu",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 98,
+      "height": 40
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 864,
+      "y": 1849
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 426
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 40,
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$string": "Label",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
+  },
+  {
+    "__type__": "e50651ro7FC5qa2Tyw6gcDQ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 426
+    },
+    "_enabled": true
   }
 ]

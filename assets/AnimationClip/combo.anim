@@ -3,7 +3,7 @@
   "_name": "combo",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 1,
+  "_duration": 0.5,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -19,27 +19,11 @@
           }
         },
         {
-          "frame": 0.16666666666666666,
+          "frame": 0.5,
           "value": {
             "__type__": "cc.Vec2",
-            "x": 2.25,
-            "y": 2.25
-          }
-        },
-        {
-          "frame": 0.3333333333333333,
-          "value": {
-            "__type__": "cc.Vec2",
-            "x": 1.5,
-            "y": 1.5
-          }
-        },
-        {
-          "frame": 1,
-          "value": {
-            "__type__": "cc.Vec2",
-            "x": 1.5,
-            "y": 1.5
+            "x": 3,
+            "y": 3
           }
         }
       ],
@@ -49,11 +33,11 @@
           "value": 0
         },
         {
-          "frame": 0.16666666666666666,
+          "frame": 0.3333333333333333,
           "value": 255
         },
         {
-          "frame": 1,
+          "frame": 0.5,
           "value": 0
         }
       ]

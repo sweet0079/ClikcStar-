@@ -12,8 +12,8 @@ export default class ClickControl extends cc.Component {
     //----- 编辑器属性 -----//
     //UI控制组件
     @property(UIControl) UIcon: UIControl = null;
-    //字体图集
-    @property([cc.SpriteFrame]) ZiSpf: Array<cc.SpriteFrame> = [];
+    // //字体图集
+    // @property([cc.SpriteFrame]) ZiSpf: Array<cc.SpriteFrame> = [];
     //字体父节点
     @property(cc.Node) Ziparent: cc.Node = null;
     //数字预制体
@@ -22,20 +22,16 @@ export default class ClickControl extends cc.Component {
     @property(cc.Prefab) comboPfb: cc.Prefab = null;
     //birthLayout节点
     @property(birthControl) birthLayout: birthControl = null;
+    //testlabel
+    @property(cc.Label) testlabel: cc.Label = null;
     //----- 属性声明 -----//
     private ScoreArr :Array<_kits.ClickShape.ScoreInfo> = [];
-    //连击数
-    private ComboNum: number = 1;
-    //上一个点击的形状
-    private LastShape: Array<number> = [];
     //三消连击数
     private SXComboNum: number = 1;
     //三消上一个点击的形状
     private SXLastShape: Array<number> = [];
     //上一个点击的增加了多少三消
     private SXLastAddCombo: number = 0;
-    //上一个点击的增加了多少combo
-    private LastAddCombo: number = 0;
     //下一个要展示的分数
     private ShowScore: number = 0;
     //下一个要展示的分数位置
@@ -46,6 +42,8 @@ export default class ClickControl extends cc.Component {
     private ComboLabelNode: cc.Node = null;
     //good等字样的节点
     private ZINode: cc.Node = null;
+
+    private clickNum = 0;
 
     //----- 生命周期 -----//
 
@@ -95,26 +93,27 @@ export default class ClickControl extends cc.Component {
      * @private
      */
     private CalAddPower(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
-        let basepower = ScoreInfoArr.length * 10;
-        if(this.birthLayout.getbossFlag())
-        {
-            return basepower;
-        }
-        let ExPower = 0;
-        if(this.LastAddCombo == 1)
-        {
-            ExPower = this.ComboNum * 5 - 5;
-        }
-        else
-        {
-            let maxExPower = this.ComboNum * 5 - 5;
-            let minExPower = (this.ComboNum - this.LastAddCombo) * 5;
-            ExPower = (maxExPower + minExPower) * this.LastAddCombo / 2;
-        }
-        // console.log("this.ComboNum = " + this.ComboNum);
-        // console.log("this.LastAddCombo = " + this.LastAddCombo);
-        // console.log("basepower + ExPower = " + (basepower + ExPower));
-        return basepower + ExPower;
+        let basepower = ScoreInfoArr.length * 20;
+        return basepower;
+        // if(this.birthLayout.getbossFlag())
+        // {
+        //     return basepower;
+        // }
+        // let ExPower = 0;
+        // if(this.LastAddCombo == 1)
+        // {
+        //     ExPower = this.ComboNum * 5 - 5;
+        // }
+        // else
+        // {
+        //     let maxExPower = this.ComboNum * 5 - 5;
+        //     let minExPower = (this.ComboNum - this.LastAddCombo) * 5;
+        //     ExPower = (maxExPower + minExPower) * this.LastAddCombo / 2;
+        // }
+        // // console.log("this.ComboNum = " + this.ComboNum);
+        // // console.log("this.LastAddCombo = " + this.LastAddCombo);
+        // // console.log("basepower + ExPower = " + (basepower + ExPower));
+        // return basepower + ExPower;
     }
 
     /**
@@ -224,117 +223,117 @@ export default class ClickControl extends cc.Component {
         }
     }
 
-    /**
-     * 根据点击计算combo，如果连续多重点击取最高combo数形状
-     * @method
-     * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
-     * @private
-     */
-    private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
-        // if(this.birthLayout.getbossFlag())
-        // {
-        //     return;
-        // }
-        //将对象数组整理为形状数组
-        let ShapeArr = [];
-        for(let i = 0 ; i < ScoreInfoArr.length ; i++)
-        {
-            if(!ScoreInfoArr[i].isSpecial)
-            {
-                ShapeArr.push(ScoreInfoArr[i].shape);
-            }
-        }
-        //形状数组长度为0则返回
-        if(ShapeArr.length == 0)
-        {
-            return; 
-        }
-        // console.log("CheckCombo");
-        // console.log(this.LastShape);
-        // console.log(ShapeArr);
-        // console.log("before this.ComboNum = " + this.ComboNum);
-        //如果没有上次点击数组，将单次点击的形状数组排序后找出数量最多的形状
-        if(this.LastShape.length == 0)
-        {
-            if(ShapeArr.length == 1)
-            {
-                this.LastShape = ShapeArr;
-                this.LastAddCombo = 0;
-            }
-            else
-            {
-                //排序
-                ShapeArr.sort(function sortNumber(a,b)
-                {
-                return a - b
-                });
-                let maxCombo = this.findMaxIndex(ShapeArr).maxCombo;
-                let maxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
-                if(maxCombo == 1)
-                {
-                    maxIndex.push(ShapeArr[ShapeArr.length - 1]);
-                }
-                this.LastShape = maxIndex;
-                this.ComboNum = maxCombo;
-                this.LastAddCombo = maxCombo;
-            }
-        }
-        else
-        {
-            let maxCombo = 0;
-            let maxIndex = [];
-            for(let i = 0; i < this.LastShape.length; i++)
-            {
-                let temp = 0;
-                for(let j = 0; j < ShapeArr.length; j++)
-                {
-                    if(this.LastShape[i] == ShapeArr[j])
-                    {
-                        temp++;
-                    }
-                }
-                if(temp > maxCombo)
-                {
-                    maxCombo = temp;
-                    maxIndex = [this.LastShape[i]];
-                }
-                else if(temp == maxCombo && temp != 0)
-                {
-                    maxIndex.push(this.LastShape[i]);
-                }
-            }
-            //如果没形成combo，重置combo数，根据这次点击重置LastShape数组
-            if(maxCombo == 0)
-            {
-                this.ComboNum = 1;
-                this.LastShape = [];
-                this.CheckCombo(ScoreInfoArr);
-            }
-            //形成combo，累加combo数并更新LastShape数组
-            else
-            {
-                this.LastShape = maxIndex;
-                this.ComboNum += maxCombo;
-                this.LastAddCombo = maxCombo;
-                let ScoremaxCombo = this.findMaxIndex(ShapeArr).maxCombo;
-                let ScoremaxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
-                if(ScoremaxCombo > this.ComboNum)
-                {
-                    this.ComboNum = ScoremaxCombo;
-                    this.LastShape = ScoremaxIndex;
-                    this.LastAddCombo = ScoremaxCombo;
-                }
-                else if(ScoremaxCombo == this.ComboNum)
-                {
-                    for(let i = 0; i < ScoremaxIndex.length ; i++)
-                    {
-                        this.LastShape.push(ScoremaxIndex[i]);
-                    }
-                }
-            }
-        }
-        // console.log("after this.ComboNum = " + this.ComboNum);
-    }
+    // /**
+    //  * 根据点击计算combo，如果连续多重点击取最高combo数形状
+    //  * @method
+    //  * @param {Array<_kits.ClickShape.ScoreInfo>} ScoreInfoArr 分数数组
+    //  * @private
+    //  */
+    // private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
+    //     // if(this.birthLayout.getbossFlag())
+    //     // {
+    //     //     return;
+    //     // }
+    //     //将对象数组整理为形状数组
+    //     let ShapeArr = [];
+    //     for(let i = 0 ; i < ScoreInfoArr.length ; i++)
+    //     {
+    //         if(!ScoreInfoArr[i].isSpecial)
+    //         {
+    //             ShapeArr.push(ScoreInfoArr[i].shape);
+    //         }
+    //     }
+    //     //形状数组长度为0则返回
+    //     if(ShapeArr.length == 0)
+    //     {
+    //         return; 
+    //     }
+    //     // console.log("CheckCombo");
+    //     // console.log(this.LastShape);
+    //     // console.log(ShapeArr);
+    //     // console.log("before this.ComboNum = " + this.ComboNum);
+    //     //如果没有上次点击数组，将单次点击的形状数组排序后找出数量最多的形状
+    //     if(this.LastShape.length == 0)
+    //     {
+    //         if(ShapeArr.length == 1)
+    //         {
+    //             this.LastShape = ShapeArr;
+    //             this.LastAddCombo = 0;
+    //         }
+    //         else
+    //         {
+    //             //排序
+    //             ShapeArr.sort(function sortNumber(a,b)
+    //             {
+    //             return a - b
+    //             });
+    //             let maxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+    //             let maxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
+    //             if(maxCombo == 1)
+    //             {
+    //                 maxIndex.push(ShapeArr[ShapeArr.length - 1]);
+    //             }
+    //             this.LastShape = maxIndex;
+    //             this.ComboNum = maxCombo;
+    //             this.LastAddCombo = maxCombo;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         let maxCombo = 0;
+    //         let maxIndex = [];
+    //         for(let i = 0; i < this.LastShape.length; i++)
+    //         {
+    //             let temp = 0;
+    //             for(let j = 0; j < ShapeArr.length; j++)
+    //             {
+    //                 if(this.LastShape[i] == ShapeArr[j])
+    //                 {
+    //                     temp++;
+    //                 }
+    //             }
+    //             if(temp > maxCombo)
+    //             {
+    //                 maxCombo = temp;
+    //                 maxIndex = [this.LastShape[i]];
+    //             }
+    //             else if(temp == maxCombo && temp != 0)
+    //             {
+    //                 maxIndex.push(this.LastShape[i]);
+    //             }
+    //         }
+    //         //如果没形成combo，重置combo数，根据这次点击重置LastShape数组
+    //         if(maxCombo == 0)
+    //         {
+    //             this.ComboNum = 1;
+    //             this.LastShape = [];
+    //             this.CheckCombo(ScoreInfoArr);
+    //         }
+    //         //形成combo，累加combo数并更新LastShape数组
+    //         else
+    //         {
+    //             this.LastShape = maxIndex;
+    //             this.ComboNum += maxCombo;
+    //             this.LastAddCombo = maxCombo;
+    //             let ScoremaxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+    //             let ScoremaxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
+    //             if(ScoremaxCombo > this.ComboNum)
+    //             {
+    //                 this.ComboNum = ScoremaxCombo;
+    //                 this.LastShape = ScoremaxIndex;
+    //                 this.LastAddCombo = ScoremaxCombo;
+    //             }
+    //             else if(ScoremaxCombo == this.ComboNum)
+    //             {
+    //                 for(let i = 0; i < ScoremaxIndex.length ; i++)
+    //                 {
+    //                     this.LastShape.push(ScoremaxIndex[i]);
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     // console.log("after this.ComboNum = " + this.ComboNum);
+    // }
 
     //显示combo数
     private ShowCombo(){
@@ -342,7 +341,7 @@ export default class ClickControl extends cc.Component {
         // {
         //     return;
         // }
-        if(this.ComboNum < 3)
+        if(this.SXComboNum < 3)
         {
             return;
         }   
@@ -351,7 +350,6 @@ export default class ClickControl extends cc.Component {
             this.ComboLabelNode.destroy();
         }
         let node = cc.instantiate(this.comboPfb);
-        node.getChildByName("number").getComponent(cc.Label).string = this.ComboNum.toString();
         let ani = node.getComponent(cc.Animation);
         ani.once('finished',()=>{
             node.destroy();
@@ -362,25 +360,25 @@ export default class ClickControl extends cc.Component {
         ani.play();
     }
 
-    //创建good字样
-    private createZiSprite(spf:cc.SpriteFrame){
-        if(this.ZINode)
-        {
-            this.ZINode.destroy();
-        }
-        let node = new cc.Node('Good');
-        let sp = node.addComponent(cc.Sprite);
-        sp.spriteFrame = spf;
-        node.scale = 0;
-        node.setPosition(0,-100);
-        node.parent = this.Ziparent;
-        let act = cc.scaleTo(1,1.5);
-        let seq = cc.sequence(act,cc.callFunc(()=>{
-            node.destroy();
-        }));
-        this.ZINode = node;
-        node.runAction(seq);
-    }
+    // //创建good字样
+    // private createZiSprite(spf:cc.SpriteFrame){
+    //     if(this.ZINode)
+    //     {
+    //         this.ZINode.destroy();
+    //     }
+    //     let node = new cc.Node('Good');
+    //     let sp = node.addComponent(cc.Sprite);
+    //     sp.spriteFrame = spf;
+    //     node.scale = 0;
+    //     node.setPosition(0,-100);
+    //     node.parent = this.Ziparent;
+    //     let act = cc.scaleTo(1,1.5);
+    //     let seq = cc.sequence(act,cc.callFunc(()=>{
+    //         node.destroy();
+    //     }));
+    //     this.ZINode = node;
+    //     node.runAction(seq);
+    // }
 
     //创建分数字样
     private createScore(){
@@ -411,39 +409,36 @@ export default class ClickControl extends cc.Component {
         }
     }
 
-    //显示good字样
-    private showGood(){
-        if(this.ComboNum == 4)
-        {
-            this.createZiSprite(this.ZiSpf[0]);
-        }
-        else if(this.ComboNum == 5)
-        {
-            this.createZiSprite(this.ZiSpf[1]);
-        }
-        else if(this.ComboNum == 6)
-        {
-            this.createZiSprite(this.ZiSpf[2]);
-        }
-        else if(this.ComboNum == 7)
-        {
-            this.createZiSprite(this.ZiSpf[3]);
-        }
-        else if(this.ComboNum >= 8)
-        {
-            this.createZiSprite(this.ZiSpf[4]);
-        }
-    }
+    // //显示good字样
+    // private showGood(){
+    //     if(this.ComboNum == 4)
+    //     {
+    //         this.createZiSprite(this.ZiSpf[0]);
+    //     }
+    //     else if(this.ComboNum == 5)
+    //     {
+    //         this.createZiSprite(this.ZiSpf[1]);
+    //     }
+    //     else if(this.ComboNum == 6)
+    //     {
+    //         this.createZiSprite(this.ZiSpf[2]);
+    //     }
+    //     else if(this.ComboNum == 7)
+    //     {
+    //         this.createZiSprite(this.ZiSpf[3]);
+    //     }
+    //     else if(this.ComboNum >= 8)
+    //     {
+    //         this.createZiSprite(this.ZiSpf[4]);
+    //     }
+    // }
 
     //重新开始
     private reStart(){
         this.SanxiaoFlag = false;
-        this.ComboNum = 1;
         this.SXComboNum = 1;
         this.ScoreArr = [];
-        this.LastShape = [];
         this.SXLastShape = [];
-        this.LastAddCombo = 0;
         this.SXLastAddCombo = 0;
     }
 
@@ -456,7 +451,9 @@ export default class ClickControl extends cc.Component {
         {
             return;
         }
-        this.UIcon.addHP(this.ScoreArr.length * 10);
+        this.clickNum += this.ScoreArr.length;
+        this.testlabel.string = this.clickNum.toString();
+        this.UIcon.addHP(this.ScoreArr.length * 5);
     }
 
     private add(ScoreInfo:_kits.ClickShape.ScoreInfo){
@@ -492,19 +489,17 @@ export default class ClickControl extends cc.Component {
     private settlement(flag:boolean = true){
         if(this.ScoreArr.length == 0)
         {
-            this.ComboNum = 1;
-            this.LastShape = [];
             this.SXComboNum = 1;
             this.SXLastShape = [];
             //console.log("扣血");
-            this.UIcon.minHP(12);
+            this.UIcon.minHP(10);
             this.ShowScore = 0;
             return;
         }
         else if(this.ScoreArr.length == 1)
         {
             // this.ComboNum++;
-            this.CheckCombo(this.ScoreArr);
+            // this.CheckCombo(this.ScoreArr);
             this.CheckSanxiao(this.ScoreArr);
             let score = this.ScoreArr[0].score;
             if(ShapeManager.getinstance().getDoubleScore())
@@ -517,7 +512,7 @@ export default class ClickControl extends cc.Component {
         else
         {
             // this.ComboNum += this.ScoreArr.length;
-            this.CheckCombo(this.ScoreArr);
+            // this.CheckCombo(this.ScoreArr);
             this.CheckSanxiao(this.ScoreArr);
             let score = 0;
             for(let i = 0; i < this.ScoreArr.length; i++)
@@ -538,10 +533,12 @@ export default class ClickControl extends cc.Component {
         if(flag)
         {
             this.ShowCombo();
-            this.showGood();
+            // this.showGood();
             if(this.SXComboNum >= 3)
             {
-                this.CleanSameShape();
+                this.scheduleOnce(()=>{
+                    this.CleanSameShape()
+                },0.1);
             }
             this.UIcon.addPOWER(this.CalAddPower(this.ScoreArr));
             this.addHP();

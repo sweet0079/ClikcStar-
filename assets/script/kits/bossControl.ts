@@ -181,6 +181,7 @@ export default class bossControl extends cc.Component {
     /** boss死亡 */
     private die(num:number = 100){
         lib.msgEvent.getinstance().emit(lib.msgConfig.stopLockHPAni);
+        lib.msgEvent.getinstance().emit(lib.msgConfig.addHP,50);
         this.node.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this.ClickBoss(event);
         });
