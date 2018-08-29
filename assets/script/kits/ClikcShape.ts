@@ -67,6 +67,10 @@ export default class ClickShape extends cc.Component {
     //     // },this);
     // }
     
+    //----- 公有方法 -----//
+    init(){
+        this.clickLock = false;
+    }
     //----- 私有方法 -----//
     // private _onNodeRotationChanged(){
     //     // this.node.getComponent(cc.MotionStreak)._motionStreak.rotation = -this.node.rotation;

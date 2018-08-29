@@ -1,7 +1,8 @@
 /** 形状管理器脚本 */
-import * as lib from '../lib/lib'
-import FlyingShape from './FlyingShape'
-import ShapeControl from './ShapeControl'
+import * as lib from '../lib/lib';
+import FlyingShape from './FlyingShape';
+import ShapeControl from './ShapeControl';
+import NodePoolInstance from './NodePoolInstance';
 
 export default class ShapeManager {
     static instance: ShapeManager
@@ -185,6 +186,7 @@ export default class ShapeManager {
         for(let i = 0; i < this.shapeArr.length; i++)
         {
             this.shapeArr[i].destroy();
+            // NodePoolInstance.getinstance().dissShape(this.shapeArr[i]);
         }
         this.shapeArr = [];
     }

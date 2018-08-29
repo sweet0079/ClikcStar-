@@ -105,3 +105,67 @@ export let setUserCloudStorage = function(score:number){
         })
     }
 }
+
+export let vibrateLong = function(success?:Function,fail?:Function,complete?:Function){
+    if(typeof wx !== 'undefined')
+    {
+        wx.vibrateLong({
+              success: res => {
+                  console.log("vibrateLong true");
+                  console.log(res);
+                  if(success)
+                  {
+                    success(res);
+                  }
+              },
+              fail: res => {
+                  console.log("vibrateLong fail");
+                  console.log(res);
+                  if(fail)
+                  {
+                    fail(res);
+                  }
+              },
+              complete: res => {
+                  console.log("vibrateLong complete");
+                  console.log(res);
+                  if(complete)
+                  {
+                    complete(res);
+                  }
+              },
+        })
+    }
+}
+
+export let vibrateShort = function(success?:Function,fail?:Function,complete?:Function){
+    if(typeof wx !== 'undefined')
+    {
+        wx.vibrateShort({
+              success: res => {
+                  console.log("vibrateLong true");
+                  console.log(res);
+                  if(success)
+                  {
+                    success(res);
+                  }
+              },
+              fail: res => {
+                  console.log("vibrateLong fail");
+                  console.log(res);
+                  if(fail)
+                  {
+                    fail(res);
+                  }
+              },
+              complete: res => {
+                  console.log("vibrateLong complete");
+                  console.log(res);
+                  if(complete)
+                  {
+                    complete(res);
+                  }
+              },
+        })
+    }
+}

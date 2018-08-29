@@ -5,6 +5,7 @@ import characteristic from './Characteristic'
 import disspation from './Disspation'
 import shapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
+import NodePoolInstance from './NodePoolInstance';
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -273,6 +274,7 @@ export default class BirthPoint extends cc.Component {
     //创建指定形状
     createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype:_kits.Characteristic.parameters,Sparameters:_kits.ShapeControl.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
+        // let shape = NodePoolInstance.getinstance().createEnemy(this.shapeprefeb);
         shape.position = this.node.position;
         this.shapeSetPath(shape,parameters);
         //随机形状的特性参数
@@ -309,6 +311,7 @@ export default class BirthPoint extends cc.Component {
     //创建一个随机形状
     private _createRandomShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
+        // let shape = NodePoolInstance.getinstance().createEnemy(this.shapeprefeb);
         shape.position = this.node.position;
         this.shapeSetPath(shape,parameters);
         //随机形状的特性参数

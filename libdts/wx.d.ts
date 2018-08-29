@@ -11,9 +11,17 @@ interface wx {
     createImage:norCallBack
     onShareAppMessage:_li.errCallBack
     shareAppMessage:ShareAppMessage
+    vibrateShort:vibrateShort
+    vibrateLong:vibrateLong
 }
 
 declare namespace wx {
+    interface vibrateLong{
+        (para:vibrateShortAug):void
+    }
+    interface vibrateShort{
+        (para:vibrateShortAug):void
+    }
     interface ShareAppMessage{
         (para:ShareAppMessageAug):void
     }
@@ -34,6 +42,11 @@ declare namespace wx {
     }
     interface showShareMenu {
         (para:showShareMenuAug):void
+    }
+    interface vibrateShortAug{
+        success: _li.errCallBack
+        fail: _li.errCallBack
+        complete: _li.errCallBack
     }
     interface ShareAppMessageAug{
         title: string

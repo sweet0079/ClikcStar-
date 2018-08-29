@@ -55,6 +55,7 @@ export default class StartGame extends cc.Component {
             }
         });
         lib.wxFun.onShareAppMessage("好想要天上的星星!好，现在就给你摘!","res/raw-assets/pic/jietu.png");
+        cc.director.preloadScene("MainScene");
         // let button = wx.createUserInfoButton({
         //     type: 'text',
         //     text: '获取用户信息',

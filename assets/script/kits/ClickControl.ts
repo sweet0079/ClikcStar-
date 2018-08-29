@@ -78,6 +78,7 @@ export default class ClickControl extends cc.Component {
      * @private
      */
     private CleanSameShape(){
+        lib.wxFun.vibrateLong();
         lib.msgEvent.getinstance().emit(lib.msgConfig.micSanXiao);
         this.SanxiaoFlag = true;
         this.SXLastAddCombo = 0;

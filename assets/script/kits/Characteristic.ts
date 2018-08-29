@@ -4,6 +4,7 @@ import FlyingShape from './FlyingShape'
 import Dissipation from './Disspation'
 import ShapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
+import NodePoolInstance from './NodePoolInstance';
 
 const {ccclass, property} = cc._decorator;
 
@@ -74,7 +75,7 @@ export default class Characteristic extends cc.Component {
                 break;
         }
     }
-    
+
     update (dt) {
         if(!this.node.getComponent(Dissipation).getLeave())
         {
@@ -123,11 +124,14 @@ export default class Characteristic extends cc.Component {
     //----- 私有方法 -----//
     //改变大小
     private scalechange() {
-        let action1 = cc.scaleBy(1,this.ScaleMultiple);
-        let action2 = cc.scaleBy(1,1/this.ScaleMultiple);
-        let seq = cc.sequence(action1,action2);
-        let act = cc.repeatForever(seq);
-        this.flyControl.ShowNode.runAction(act);
+        if(this.flyControl)
+        {
+            let action1 = cc.scaleBy(1,this.ScaleMultiple);
+            let action2 = cc.scaleBy(1,1/this.ScaleMultiple);
+            let seq = cc.sequence(action1,action2);
+            let act = cc.repeatForever(seq);
+            this.flyControl.ShowNode.runAction(act);
+        }
     }
 
     //速度变化
@@ -167,8 +171,20 @@ export default class Characteristic extends cc.Component {
 
     //分裂变化
     private divisionchange(){
+        let shape1;
+        let shape2;
+        // if(this.node.getComponent(ShapeControl).isSpecial)
+        {
+            shape1 = cc.instantiate(this.shapeprefeb);
+            shape2 = cc.instantiate(this.shapeprefeb);
+        }
+        // else
+        // {
+        //     shape1 = NodePoolInstance.getinstance().createEnemy(this.shapeprefeb);
+        //     shape2 = NodePoolInstance.getinstance().createEnemy(this.shapeprefeb);
+        // }
         let [type,color] = this.node.getComponent(ShapeControl).gettype();
-        let shape1 = cc.instantiate(this.shapeprefeb);
+        // let shape1 = cc.instantiate(this.shapeprefeb);
         shape1.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape1.getComponent(FlyingShape).addAngle(45);
         shape1.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
@@ -177,7 +193,7 @@ export default class Characteristic extends cc.Component {
         shape1.position = this.node.position;
         shape1.scale = this.node.scale;
         shape1.parent = this.node.parent;
-        let shape2 = cc.instantiate(this.shapeprefeb);
+        // let shape2 = cc.instantiate(this.shapeprefeb);
         shape2.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape2.getComponent(FlyingShape).addAngle(-45);
         shape2.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
@@ -197,7 +213,14 @@ export default class Characteristic extends cc.Component {
             ShapeManager.getinstance().addShape(shape2);
         }
         ShapeManager.getinstance().delShape(this.node);
-        this.node.destroy();
+        // if(this.node.getComponent(ShapeControl).isSpecial)
+        {
+            this.node.destroy(); 
+        }
+        // else
+        // {
+        //     NodePoolInstance.getinstance().dissShape(this.node);
+        // }
     }
 
     //旋转

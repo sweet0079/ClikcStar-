@@ -1,7 +1,8 @@
 /** 用于控制形状的碰撞事件 */
-import * as lib from '../lib/lib'
-import ShapeControl from './ShapeControl'
-import ShapeManager from './ShapeManager'
+import * as lib from '../lib/lib';
+import ShapeControl from './ShapeControl';
+import ShapeManager from './ShapeManager';
+import NodePoolInstance from './NodePoolInstance';
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,7 +37,9 @@ export default class ColliderControl extends cc.Component {
         ShapeManager.getinstance().delShape(this.node);
         let act = cc.scaleTo(0.2,0);
         let seq = cc.sequence(act,cc.callFunc(()=>{
+            this.hasDes = false;
             this.node.parent.destroy();
+            // NodePoolInstance.getinstance().dissShape(this.node.parent);
         }));
         this.node.runAction(seq);
         // this.node.parent.getComponent(ShapeControl).destroyAni();

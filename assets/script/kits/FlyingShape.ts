@@ -55,7 +55,10 @@ export default class FlyingShape extends cc.Component {
     //----- 生命周期 -----//
     // onLoad () {}
 
-    start () {
+    // start () {
+    // }
+
+    onEnable(){
         //根据出生位置改变飞行轨迹部分参数
         switch(this.birthpos)
         {

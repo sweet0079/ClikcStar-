@@ -1,10 +1,11 @@
 /** 用于控制形状的特性 */
-import * as lib from '../lib/lib'
-import FlyingShape from './FlyingShape'
-import characteristic from './Characteristic'
-import ShapeManager from './ShapeManager'
-import randomRotate from './randomRotate'
-import dispationControl from './Disspation'
+import * as lib from '../lib/lib';
+import FlyingShape from './FlyingShape';
+import characteristic from './Characteristic';
+import ShapeManager from './ShapeManager';
+import randomRotate from './randomRotate';
+import dispationControl from './Disspation';
+import NodePoolInstance from './NodePoolInstance';
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -67,6 +68,20 @@ export default class ShapeControl extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
     }
     //----- 公有方法 -----//
+    init(){
+        this.flyControl = this.node.getComponent(FlyingShape);
+        this.dissControl = this.node.getComponent(dispationControl);
+        if(this.flyControl.ShowNode.childrenCount > 0)
+        {
+            this.flyControl.ShowNode.getChildByName("star").scale = 0.8;
+            this.flyControl.ShowNode.getChildByName("star").opacity = 255;
+        }
+        this.flyControl.ShowNode.scale = 1;
+        this.flyControl.ShowNode.opacity = 255;
+        this.flyControl.ShowNode.x = 0;
+        this.flyControl.ShowNode.y = 0;
+        this.node.scale = 1.5;
+    }
     //播放点击爆裂动画
     destroyAni(center:boolean = true){
         this.stopMoveAndAct();
@@ -83,7 +98,15 @@ export default class ShapeControl extends cc.Component {
             }
         }
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
-            this.node.destroy();
+            // this.node.destroy();
+            // if(this.isSpecial)
+            {
+                this.node.destroy(); 
+            }
+            // else
+            // {
+            //     NodePoolInstance.getinstance().dissShape(this.node);
+            // }
         },this);
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
         if(this.isSpecial)
@@ -244,7 +267,15 @@ export default class ShapeControl extends cc.Component {
     }
     //重新开始事件回调
     private reStart(){
-        this.node.destroy();
+        // this.node.destroy();
+            // if(this.isSpecial)
+            {
+                this.node.destroy(); 
+            }
+            // else
+            // {
+            //     NodePoolInstance.getinstance().dissShape(this.node);
+            // }
     }
 
     //----- 私有方法 -----//
@@ -252,7 +283,15 @@ export default class ShapeControl extends cc.Component {
     private _destroyAni(center = true){
         this.stopMoveAndAct();
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
-            this.node.destroy();
+            // this.node.destroy();
+            // if(this.isSpecial)
+            {
+                this.node.destroy(); 
+            }
+            // else
+            // {
+            //     NodePoolInstance.getinstance().dissShape(this.node);
+            // }
         },this);
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
         if(this.isSpecial)

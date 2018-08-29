@@ -1,8 +1,10 @@
 /** 用于控制形状的消散 */
-import * as lib from '../lib/lib'
-import FlyingShape from './FlyingShape'
-import shapeControl from './ShapeControl'
-import ShapeManager from './ShapeManager'
+import * as lib from '../lib/lib';
+import FlyingShape from './FlyingShape';
+import shapeControl from './ShapeControl';
+import ShapeManager from './ShapeManager';
+import NodePoolInstance from './NodePoolInstance';
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -47,7 +49,15 @@ export default class Dissipation extends cc.Component {
         || this.node.position.y < -lib.defConfig.DesignPlayHeight) 
         {
             ShapeManager.getinstance().delShape(this.node);
-            this.node.destroy();
+            // this.node.destroy();
+            // if(this.node.getComponent(shapeControl).isSpecial)
+            {
+                this.node.destroy(); 
+            }
+            // else
+            // {
+            //     NodePoolInstance.getinstance().dissShape(this.node);
+            // }
         }
         //离开屏幕后进行销毁判断
         if(this.haveLeave)
@@ -63,7 +73,15 @@ export default class Dissipation extends cc.Component {
                     return;
                 }
                 ShapeManager.getinstance().delShape(this.node);
-                this.node.destroy();
+                // this.node.destroy();
+                // if(this.node.getComponent(shapeControl).isSpecial)
+                {
+                    this.node.destroy(); 
+                }
+                // else
+                // {
+                //     NodePoolInstance.getinstance().dissShape(this.node);
+                // }
             }
             return;
         }
